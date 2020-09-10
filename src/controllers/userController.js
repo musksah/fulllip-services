@@ -7,19 +7,20 @@ module.exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email: email } });
     if (user == null) {
-        res.status(201).send({ message: "El usuario no existe" });
+        res.status(201).send({ message: "Credenciales Inválidas" });
     } else {
         bcrypt.compare(password, user.password, (error, data) => {
             if (data === true) {
-                const { id_user, name, email } = user;
+                const { id_user, name, email, id_rol } = user;
                 req.session.id_user = id_user;
                 req.session.name = name;
                 req.session.email = email;
+                req.session.id_rol = id_rol;
 
                 const token = jwt.sign({ id_user, name, email }, keytoken);
-                res.json(token);
+                res.json({ token: token, rol: id_rol });
             } else {
-                res.status(202).send({ message: "Contraseña incorrecta" });
+                res.status(202).send({ message: "Credenciales Inválidas" });
             }
         });
 
