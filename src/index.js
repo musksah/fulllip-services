@@ -28,6 +28,8 @@ app.use(bodyParser.json());
 app.use('/api/user', require('./routes/userRoute'));
 app.use('/api/advice', require('./routes/adviceRoute'));
 app.use('/api/qa', require('./routes/qaRoute'));
+app.use('/api/contact', require('./routes/contactRoute'));
+app.use('/api/img-index', require('./routes/imageIndexRoute'));
 
 
 

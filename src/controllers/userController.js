@@ -45,8 +45,6 @@ module.exports.register = (req, res) => {
                 console.error(error);
                 res.json("No se pudo insertar");
             }
-
-
         }
     });
 }
