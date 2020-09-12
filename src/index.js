@@ -27,7 +27,8 @@ app.use('/api/user', require('./routes/userRoute'));
 app.use('/api/advice', require('./routes/adviceRoute'));
 app.use('/api/qa', require('./routes/qaRoute'));
 app.use('/api/contact', require('./routes/contactRoute'));
-app.use('/api/img-index', require('./routes/imageIndexRoute'));
+app.use('/api/img-carrousell', require('./routes/imgCarrousellRoute'));
+app.use('/api/img-in-products', require('./routes/imgInProductRoute'));
 
 
 
