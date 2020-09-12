@@ -1,18 +1,18 @@
 module.exports = {
     database: {
         username: 'root',
-        password: '',
+        password: 'root123',
         database: 'fulllip',
         host: 'localhost',
-        port: '3306',
+        port: '3305',
         dialect: 'mysql'
     },
     databaseSession: {
         user: 'root',
-        password: '',
+        password: 'root123',
         database: 'fulllip',
         host: 'localhost',
-        port: '3306',
+        port: '3305',
     },
     url: 'https://localhost',
     keytoken: 'Buenas muchachos',

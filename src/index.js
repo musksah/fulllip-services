@@ -4,8 +4,6 @@ const cors = require('cors');
 const keys = require('./keys');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-
-
 const sessionStore = new MySQLStore(keys.databaseSession);
 const app = express();
 
@@ -30,6 +28,14 @@ app.use('/api/advice', require('./routes/adviceRoute'));
 app.use('/api/qa', require('./routes/qaRoute'));
 app.use('/api/contact', require('./routes/contactRoute'));
 app.use('/api/img-index', require('./routes/imageIndexRoute'));
+
+
+
+app.post('/api/user/logout', (req, res) => {
+    sessionStore.destroy(req.body.session, () => {
+        res.json("Cerró la sesión");
+    });
+});
 
 
 
