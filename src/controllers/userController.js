@@ -51,7 +51,7 @@ module.exports.register = (req, res) => {
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;
                     const token = jwt.sign({ id_user, name, email }, keytoken);
-                    req.session.user_id = id_user;
+                    req.session.id_user = id_user;
                     req.session.name = name;
                     req.session.email = email;
                     req.session.id_rol = id_rol;

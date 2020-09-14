@@ -39,7 +39,7 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             defaultValue: 0
         },
-        contry: {
+        country: {
             type: type.STRING,
             allowNull: false,
             defaultValue: ''

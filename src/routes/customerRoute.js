@@ -5,7 +5,7 @@ const customerController = require('../controllers/customerController');
 
 router.post('/', customerController.findOne);
 
-router.put('/', customerController.updateProfile);
+router.put('/:id', customerController.updateProfile);
 
 
 
