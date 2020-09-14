@@ -5,15 +5,50 @@ module.exports = (sequelize, type) => {
             primaryKey: true,
             autoIncrement: true
         },
-        dni_id: type.STRING,
-        name: type.STRING,
-        lastname: type.STRING,
-        address: type.STRING,
-        phone: type.STRING,
-        birthdate: type.DATE,
-        gender: type.DATE,
-        contry: type.DATE,
-        city: type.DATE,
+        dni_id: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        name: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        lastname: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        address: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        phone: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        birthdate: {
+            type: type.DATE,
+        },
+        gender:
+        {
+            type: type.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
+        contry: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
+        city: {
+            type: type.STRING,
+            allowNull: false,
+            defaultValue: ''
+        },
         id_user: {
             type: type.BIGINT,
             references: {

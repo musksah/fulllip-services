@@ -7,9 +7,13 @@ module.exports = (sequelize, type) => {
         },
         email: {
             type: type.STRING,
-            unique: true
+            unique: true,
+            allowNull: false
         },
-        password: type.STRING,
+        password: {
+            type: type.STRING,
+            allowNull: false
+        },
         is_active: {
             type: type.INTEGER,
             defaultValue: 1,
