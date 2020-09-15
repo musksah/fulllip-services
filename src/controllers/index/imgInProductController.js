@@ -11,7 +11,7 @@ module.exports.findOne = async (req, res) => {
 
 module.exports.create = async (req, res) => {
     const bdy = req.body;
-    const create = ImageCarr.ImgInProduct(bdy)
+    const create = ImageCarr.create(bdy)
     res.json(create);
 }
 

@@ -31,6 +31,7 @@ app.use('/api/contact', require('./routes/contactRoute'));
 app.use('/api/img-carrousell', require('./routes/imgCarrousellRoute'));
 app.use('/api/img-in-products', require('./routes/imgInProductRoute'));
 app.use('/api/customer', require('./routes/customerRoute'));
+app.use('/api/rol', require('./routes/rolRoute'));
 
 
 app.get('/', (req, res) => {
