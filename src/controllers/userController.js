@@ -10,7 +10,7 @@ module.exports.login = async (req, res) => {
     User.hasOne(Customer, { foreignKey: 'id_user' });
     const user = await User.findOne({ where: { email: email }, include: [Customer] });
     if (user == null) {
-        res.status(201).send({ message: "Credenciales Inválidas" });
+        res.status(201).send({ message: "Credenciales Inválidas." });
     } else {
         bcrypt.compare(password, user.password, (error, data) => {
             if (data === true) {
@@ -26,7 +26,7 @@ module.exports.login = async (req, res) => {
                 res.json({ token: token, rol: id_rol, name: name, session: sessionI });
                 console.log(token);
             } else {
-                res.status(201).send({ message: "Credenciales Inválidas" });
+                res.status(201).send({ message: "Credenciales Inválidas." });
             }
         });
 
@@ -37,7 +37,7 @@ module.exports.register = (req, res) => {
     bcrypt.hash(req.body.password, 10, async (err, data) => {
         if (err) {
             console.log(err);
-            res.status(201).send({ message: "Usuario Existente" });
+            res.status(201).send({ message: "Usuario Existente." });
         } else {
             req.body.password = data;
             try {
@@ -53,12 +53,10 @@ module.exports.register = (req, res) => {
                     req.session.id_rol = id_rol;
                     const sessionI = req.sessionID;
                     res.json({ token: token, name: name, session: sessionI });
-                    console.log(token);
-
                 }
             } catch (error) {
                 console.error(error);
-                res.status(201).send({ message: "Usuario Existente" });
+                res.status(201).send({ message: "Usuario Existente." });
             }
         }
     }
@@ -75,11 +73,35 @@ module.exports.session = (req, res) => {
     const token = req.headers['authorization'].split(" ")[1];
     jwt.verify(token, keytoken, (err, decoded) => {
         if (err) {
-            res.status(201).send({ message: "Token no válido" });
+            res.status(201).send({ message: "Token no válido." });
             console.log(err);
         } else {
-            console.log(decoded);
             res.json(decoded);
+        }
+    });
+}
+
+module.exports.updatePassword = async (req, res) => {
+    const { passwordA } = req.body;
+    const user = await User.findOne({ where: { id_user: req.params.id } });
+    bcrypt.compare(passwordA, user.password, (error, data) => {
+        if (data === true) {
+            bcrypt.hash(req.body.password, 10, async (err, datos) => {
+                if (err) {
+                    console.log(err);
+                    res.status(201).send({ message: "Contraseña Antigua Incorrecta." });
+                } else {
+                    req.body.password = datos;
+                    const [numberOfAffectedRows, affectedRows] = await User.update({ password: req.body.password }, {
+                        where: { id_user: req.params.id },
+                        returning: true
+                    });
+                    res.status(200).send({ message: "La contraseña fue actualizada." });
+                }
+            });
+        }
+        else {
+            res.status(201).send({ message: "Contraseña Antigua Incorrecta." });
         }
     });
 }

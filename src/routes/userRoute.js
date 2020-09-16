@@ -13,4 +13,6 @@ router.get('/', userController.session);
 
 router.post('/logout', userController.logOut)
 
+router.put('/:id', userController.updatePassword);
+
 module.exports = router;
