@@ -17,18 +17,14 @@ module.exports.login = async (req, res) => {
 
                 const { id_user, email, id_rol } = user;
                 const { name } = user.customer;
-                const token = jwt.sign({ id_user, name, email }, keytoken);
-                console.log(id_user);
-                console.log(email);
-                console.log(id_rol);
-                console.log(name);
+                const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: 60 * 60 });
                 req.session.id_user = id_user;
                 req.session.name = name;
                 req.session.email = email;
                 req.session.id_rol = id_rol;
                 const sessionI = req.sessionID;
-                console.log(req.session)
                 res.json({ token: token, rol: id_rol, name: name, session: sessionI });
+                console.log(token);
             } else {
                 res.status(201).send({ message: "Credenciales Inválidas" });
             }
@@ -50,13 +46,15 @@ module.exports.register = (req, res) => {
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;
-                    const token = jwt.sign({ id_user, name, email }, keytoken);
+                    const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: 60 * 60 });
                     req.session.id_user = id_user;
                     req.session.name = name;
                     req.session.email = email;
                     req.session.id_rol = id_rol;
                     const sessionI = req.sessionID;
                     res.json({ token: token, name: name, session: sessionI });
+                    console.log(token);
+
                 }
             } catch (error) {
                 console.error(error);
@@ -70,5 +68,18 @@ module.exports.register = (req, res) => {
 module.exports.logOut = (req, res) => {
     sessionStore.destroy(req.body.session, (error) => {
         res.json("ok");
+    });
+}
+
+module.exports.session = (req, res) => {
+    const token = req.headers['authorization'].split(" ")[1];
+    jwt.verify(token, keytoken, (err, decoded) => {
+        if (err) {
+            res.status(201).send({ message: "Token no válido" });
+            console.log(err);
+        } else {
+            console.log(decoded);
+            res.json(decoded);
+        }
     });
 }
