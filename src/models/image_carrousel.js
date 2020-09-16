@@ -1,6 +1,6 @@
 module.exports = (sequelize, type) => {
     const ImageIn = sequelize.define('image_carrousel', {
-        id_image_index: {
+        id_image_carrousel: {
             type: type.BIGINT,
             primaryKey: true,
             autoIncrement: true

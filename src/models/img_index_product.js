@@ -1,6 +1,6 @@
 module.exports = (sequelize, type) => {
     const ImgInProduct = sequelize.define('img_index_product', {
-        id_image_index: {
+        id_image_index_product: {
             type: type.BIGINT,
             primaryKey: true,
             autoIncrement: true
