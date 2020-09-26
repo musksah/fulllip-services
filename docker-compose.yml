@@ -1,0 +1,22 @@
+version: "3.2"
+services:
+  nodejs:
+    build: 
+      context: .
+    image: fullip-services
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=fulllip-mysql-app
+      - MYSQL_USER=root
+      - MYSQL_PASS=fulllip
+      - MYSQL_DB=fulllip
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "3005:8005"
+    container_name: fulllip-nodejs-app
+networks:
+  frontend:
+  backend:

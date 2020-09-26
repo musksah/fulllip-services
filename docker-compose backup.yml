@@ -1,0 +1,46 @@
+version: "3.2"
+services:
+  nodejs:
+    build: 
+      context: .
+    image: fullip-services
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST=fulllip-mysql-app
+      - MYSQL_USER=root
+      - MYSQL_PASS=fulllip
+      - MYSQL_DB=fulllip
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "30001:8005"
+    container_name: fulllip-nodejs-app
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=fulllipuser
+      - MYSQL_PASSWORD=fulllippass 
+      - MYSQL_DATABASE=fulllip_db
+    container_name: fulllip-mysql-app
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "30002:80"
+    environment:
+      - PMA_HOST=fulllip-mysql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: fulllip-phpmyadmin-app
+networks:
+  frontend:
+  backend:
