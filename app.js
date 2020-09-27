@@ -17,7 +17,7 @@ app.use(session({
 
 
 
-app.set('port', process.env.PORT || 8005);
+app.set('port', 8005);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));

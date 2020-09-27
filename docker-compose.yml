@@ -7,11 +7,8 @@ services:
     networks:
       - frontend
       - backend
-    environment:
-      - MYSQL_HOST=fulllip-mysql-app
-      - MYSQL_USER=root
-      - MYSQL_PASS=fulllip
-      - MYSQL_DB=fulllip
+    env_file:
+      - .env
     volumes:
       - ./www/:/var/www/html/
     ports:
