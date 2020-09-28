@@ -17,7 +17,7 @@ module.exports.login = async (req, res) => {
 
                 const { id_user, email, id_rol } = user;
                 const { name } = user.customer;
-                const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: 60 * 60 });
+                const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
                 req.session.id_user = id_user;
                 req.session.name = name;
                 req.session.email = email;
@@ -46,7 +46,7 @@ module.exports.register = (req, res) => {
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;
-                    const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: 60 * 60 });
+                    const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
                     req.session.id_user = id_user;
                     req.session.name = name;
                     req.session.email = email;
