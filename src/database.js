@@ -25,7 +25,7 @@ const Rol = rolModel(sequelize, Sequelize);
 const Advice = adviceModel(sequelize, Sequelize);
 const Customer = customerModel(sequelize, Sequelize);
 const ImageIn = imageInModel(sequelize, Sequelize);
-const ImageIt = imageItModel(sequelize, Sequelize);
+const ImageItem = imageItModel(sequelize, Sequelize);
 const Item = itemModel(sequelize, Sequelize);
 const PayM = payMModel(sequelize, Sequelize);
 const Permission = permissionModel(sequelize, Sequelize);
@@ -48,7 +48,7 @@ module.exports = {
     Advice,
     Customer,
     ImageIn,
-    ImageIt,
+    ImageItem,
     Item,
     PayM,
     Permission,

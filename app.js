@@ -33,10 +33,11 @@ app.use('/api/img-in-products', require('./src/routes/imgInProductRoute'));
 app.use('/api/customer', require('./src/routes/customerRoute'));
 app.use('/api/rol', require('./src/routes/rolRoute'));
 app.use('/api/video', require('./src/routes/videoRoute'));
+app.use('/api/item', require('./src/routes/itemRoute'));
 
 
 app.get('/', (req, res) => {
-    res.send("Bienvenidos a full-lip");
+    res.send("Bienvenido a los servicios de Fullip");
 });
 
 app.listen(app.get('port'), () => {

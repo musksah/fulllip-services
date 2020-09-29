@@ -8,6 +8,7 @@ module.exports = (sequelize, type) => {
         name: type.STRING,
         description: type.TEXT,
         weight: type.STRING,
+        price: type.INTEGER,
         quantity: type.INTEGER
     }, {
         tableName: 'item'
