@@ -27,13 +27,13 @@ app.use(bodyParser.json());
 app.use('/api/user', require('./src/routes/userRoute'));
 app.use('/api/advice', require('./src/routes/adviceRoute'));
 app.use('/api/qa', require('./src/routes/qaRoute'));
-app.use('/api/contact', require('./src/routes/contactRoute'));
 app.use('/api/img-carrousell', require('./src/routes/imgCarrousellRoute'));
 app.use('/api/img-in-products', require('./src/routes/imgInProductRoute'));
 app.use('/api/customer', require('./src/routes/customerRoute'));
 app.use('/api/rol', require('./src/routes/rolRoute'));
 app.use('/api/video', require('./src/routes/videoRoute'));
 app.use('/api/item', require('./src/routes/itemRoute'));
+app.use('/api/email', require('./src/routes/emailRoute'));
 
 
 app.get('/', (req, res) => {

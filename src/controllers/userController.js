@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const { User, Customer } = require('../database');
 const { keytoken } = require('../keys');
 const { sessionStore } = require('../middlewares/session');
+const { MailManager } = require('../util/mail');
 
 
 module.exports.login = async (req, res) => {
@@ -14,7 +15,6 @@ module.exports.login = async (req, res) => {
     } else {
         bcrypt.compare(password, user.password, (error, data) => {
             if (data === true) {
-
                 const { id_user, email, id_rol } = user;
                 const { name } = user.customer;
                 const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
@@ -43,10 +43,12 @@ module.exports.register = (req, res) => {
             try {
                 const user = await User.create({ email: req.body.email, password: req.body.password });
                 if (user) {
+                    const mailManager = new MailManager();
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;
                     const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
+                    const response = await mailManager.sendEmailConfirmation(token);
                     req.session.id_user = id_user;
                     req.session.name = name;
                     req.session.email = email;
@@ -61,6 +63,16 @@ module.exports.register = (req, res) => {
         }
     }
     );
+}
+
+module.exports.confirmation = async (req, res) => {
+    const token = req.params.token;
+    const decoded = jwt.decode(token);
+    const response = await User.update(
+        { confirmed: 1 },
+        { where: { id_user: decoded.id_user } }
+    );
+    res.json({ 'response': 'Usuario actulizado' });
 }
 
 module.exports.logOut = (req, res) => {

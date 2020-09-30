@@ -3,7 +3,6 @@
 const { User, Customer } = require('../database');
 const { keytoken } = require('../keys');
 const { sessionStore } = require('../middlewares/session');
-const { sendMail } = require('./contactController');
 
 
 module.exports.findOne = (req, res) => {

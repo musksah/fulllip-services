@@ -18,6 +18,10 @@ module.exports = (sequelize, type) => {
             type: type.INTEGER,
             defaultValue: 1,
         },
+        confirmed: {
+            type: type.INTEGER,
+            defaultValue: 0,
+        },
         id_rol: {
             type: type.BIGINT,
             defaultValue: 1,
