@@ -9,7 +9,7 @@ router.post('/', userController.login);
 
 router.post('/register', userController.register);
 
-router.get('/confirmation/:token', userController.confirmation);
+router.post('/confirmation/:token', userController.confirmation);
 
 router.get('/', userController.session);
 

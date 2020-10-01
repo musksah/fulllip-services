@@ -15,7 +15,7 @@ module.exports.login = async (req, res) => {
     } else {
         bcrypt.compare(password, user.password, (error, data) => {
             if (data === true) {
-                const { id_user, email, id_rol } = user;
+                const { id_user, email, id_rol, confirmed } = user;
                 const { name } = user.customer;
                 const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
                 req.session.id_user = id_user;
@@ -23,7 +23,7 @@ module.exports.login = async (req, res) => {
                 req.session.email = email;
                 req.session.id_rol = id_rol;
                 const sessionI = req.sessionID;
-                res.json({ token: token, rol: id_rol, name: name, session: sessionI });
+                res.json({ token: token, rol: id_rol, name: name, session: sessionI, confirmed: confirmed });
                 console.log(token);
             } else {
                 res.status(201).send({ message: "Credenciales Inválidas." });

@@ -26,7 +26,7 @@ class Mail {
             <h1>Hola ${decoded.name}</h1>
             <p>Anderson no sabe programar</p>
             <p>Confirma tu correo electrónico:</p>
-            <a href="http://localhost:8005/api/user/confirmation/${token}">http://localhost/api/user/confirmation</a>`,
+            <a href="http://localhost:3000/confirmation-email/${token}">http://localhost:3000/confirmation-email/confirmation</a>`,
         }
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
