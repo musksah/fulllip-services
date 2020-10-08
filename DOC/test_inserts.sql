@@ -35,11 +35,11 @@ INSERT INTO item (id_item,name,description,weight,price,quantity,createdAt,updat
 ,(4,'Pequeño Ovalado','El producto pequeño ovalado es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:14:12.0','2020-09-17 02:14:12.0');
 
 
-INSERT INTO image_item (id_image_item,name,url,type_image,`size`,priority_field,weight,id_item,createdAt,updatedAt) VALUES 
-(1,'Kit','/img/kit.jpg','jpg','2mb',1,'2mb',1,'2020-09-17 03:35:59.0','2020-09-17 03:35:59.0')
-,(2,'Largo Redondo','/img/LargeRound.jpg','jpg','2mb',1,'2mb',2,'2020-09-17 03:36:53.0','2020-09-17 03:36:53.0')
-,(3,'Ovalo Mediano','/img/MediumOval.jpg','jpg','2mb',1,'2mb',3,'2020-09-17 03:37:43.0','2020-09-17 03:37:43.0')
-,(4,'Ovalo Pequeño','/img/MediumOval.jpg','jpg','2mb',1,'2mb',4,'2020-09-17 03:37:59.0','2020-09-17 03:37:59.0');
+INSERT INTO image_item (id_image_item,name,subtitle,url,type_image,`size`,priority_field,weight,id_item,createdAt,updatedAt) VALUES 
+(1,'Kit','Producto promocionado','/img/kit.jpg','jpg','2mb',1,'2mb',1,'2020-09-17 03:35:59.0','2020-09-17 03:35:59.0')
+,(2,'Largo Redondo','Producto unitario','/img/LargeRound.jpg','jpg','2mb',1,'2mb',2,'2020-09-17 03:36:53.0','2020-09-17 03:36:53.0')
+,(3,'Ovalo Mediano','Producto unitario','/img/MediumOval.jpg','jpg','2mb',1,'2mb',3,'2020-09-17 03:37:43.0','2020-09-17 03:37:43.0')
+,(4,'Ovalo Pequeño','Producto unitario','/img/MediumOval.jpg','jpg','2mb',1,'2mb',4,'2020-09-17 03:37:59.0','2020-09-17 03:37:59.0');
 
 INSERT INTO `video` (`id_video`, `title`, `url`, `description`, `createdAt`, `updatedAt`) VALUES 
 (1, 'Pequeño Ovalado', 'https://www.youtube.com/watch?time_continue=4&v=C20sxH4Ss80&feature=emb_logo&app=desktop', '', '2020-09-21 00:00:00', '2020-09-21 00:00:00'), 
