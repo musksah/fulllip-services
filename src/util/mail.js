@@ -1,32 +1,32 @@
 
 var nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
+const {smtp} = require('../keys')
 
 class Mail {
     sendEmailConfirmation(token) {
         const decoded = jwt.decode(token);
         const transporter = nodemailer.createTransport({
-            host: '45.82.73.11',
-            port: '25',
+            host: smtp.host,
+            port: smtp.port,
             secure: false,
             auth: {
-                user: 'info@sebastian-hr.com',
-                pass: 'fullips2020$'
+                user: smtp.user,
+                pass: smtp.password
             },
             tls: {
                 rejectUnauthorized: false
             }
         });
-
+        const host = process.env.DB_HOST || 'fullipscolombia.com';
         var mailOptions = {
-            from: "info@sebastian-hr.com",
+            from: smtp.user,
             to:`${decoded.email}`,
-            subject: "Enviado dese fullips",
+            subject: "Confirma tu correo electrónico",
             html: `
             <h1>Hola ${decoded.name}</h1>
-            <p>Anderson no sabe programar</p>
             <p>Confirma tu correo electrónico:</p>
-            <a href="http://localhost:3000/confirmation-email/${token}">http://localhost:3000/confirmation-email/confirmation</a>`,
+            <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
         }
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {

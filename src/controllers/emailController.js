@@ -1,30 +1,25 @@
 var nodemailer = require('nodemailer');
+const {smtp} = require('../keys')
+
 
 module.exports.sendMail = async (req, res) => {
     const transporter = nodemailer.createTransport({
-        host: '45.82.73.11',
-        port: '25',
+        host: smtp.host,
+        port: smtp.port,
         secure: false,
         auth: {
-            user: 'info@sebastian-hr.com',
-            pass: 'fullips2020$'
+            user: smtp.user,
+            pass: smtp.password
         },
         tls: {
             rejectUnauthorized: false
         }
-        // host: 'smtp.ethereal.email',
-        // port: 587,
-        // auth: {
-        //     user: 'melvina30@ethereal.email',
-        //     pass: 'rmQtRnuswkyZnPkFuC'
-        // }
-        
     });
 
     var mailOptions = {
-        from: "info@sebastian-hr.com",
+        from: smtp.user,
         to: 'xsebastianhrodriguezx@gmail.com',
-        subject: "Enviado dese fullips",
+        subject: "Prueba fullips",
         html: `
         <h1>Confirma tu correo</h1>
         <p>Anderson no sabe programar</p>

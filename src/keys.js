@@ -1,19 +1,25 @@
 module.exports = {
     database: {
-        username: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_DATABASE || 'fulllip',
-        host: process.env.DB_HOST || 'localhost',
+        username: process.env.DB_USER || 'admin_fullips',
+        password: process.env.DB_PASSWORD || 'fullips2020$',
+        database: process.env.DB_DATABASE || 'admin_fullips',
+        host: process.env.DB_HOST || '45.90.108.19',
         port: process.env.DB_PORT || '3306',
         dialect: process.env.DB_DIALECT || 'mysql'
     },
     databaseSession: {
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_DATABASE || 'fulllip',
-        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER || 'admin_fullips',
+        password: process.env.DB_PASSWORD || 'fullips2020$',
+        database: process.env.DB_DATABASE || 'admin_fullips',
+        host: process.env.DB_HOST || '45.90.108.19',
         port: process.env.DB_PORT || '3306',
     },
     keytoken: process.env.KEYTOKEN || 'FULLIPTOKEN2020',
-    keysession: process.env.KEYSESSION || 'FULLIPTOKEN2020'
+    keysession: process.env.KEYSESSION || 'FULLIPTOKEN2020',
+    smtp:{
+        host:'smtp.flockmail.com',
+        port: '587',
+        user:'info@sebastian-hr.com',
+        password: 'D4nt3d3inf3rn0'
+    }
 };

@@ -34,6 +34,7 @@ app.use('/api/rol', require('./src/routes/rolRoute'));
 app.use('/api/video', require('./src/routes/videoRoute'));
 app.use('/api/item', require('./src/routes/itemRoute'));
 app.use('/api/email', require('./src/routes/emailRoute'));
+app.use('/api/epayco', require('./src/routes/epaycoRoute'));
 
 
 app.get('/', (req, res) => {
