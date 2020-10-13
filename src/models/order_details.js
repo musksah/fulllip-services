@@ -1,16 +1,17 @@
 module.exports = (sequelize, type) => {
-    const ShoppingCI = sequelize.define('shopping_cart_item', {
-        id_shopping_cart_item: {
+    const OrderDetails = sequelize.define('order_details', {
+        id_order_details: {
             type: type.BIGINT,
             primaryKey: true,
             autoIncrement: true
         },
         quantity: type.INTEGER,
-        id_shopping_cart: {
+        value: type.INTEGER,
+        id_order: {
             type: type.BIGINT,
             references: {
-                model: 'shopping_cart',
-                key: 'id_shopping_cart'
+                model: 'order',
+                key: 'id_order'
             }
         },
         id_item: {
@@ -21,7 +22,7 @@ module.exports = (sequelize, type) => {
             }
         }
     }, {
-        tableName: 'shopping_cart_item'
+        tableName: 'order_details'
     });
-    return ShoppingCI;
+    return OrderDetails;
 }

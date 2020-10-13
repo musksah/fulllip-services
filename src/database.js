@@ -9,8 +9,9 @@ const permissionModel = require('./models/permission');
 const qaModel = require('./models/qa');
 const rolModel = require('./models/rol');
 const saleModel = require('./models/sale');
-const shoppingCModel = require('./models/shopping_cart');
-const shoppingCIModel = require('./models/shopping_cart_item');
+const shippingModel = require('./models/shipping');
+const orderModel = require('./models/order');
+const orderDetailsModel = require('./models/order_details');
 const userModel = require('./models/user');
 const userPModel = require('./models/user_permission');
 const imageCarrModel = require('./models/image_carrousel');
@@ -30,9 +31,10 @@ const Item = itemModel(sequelize, Sequelize);
 const PayM = payMModel(sequelize, Sequelize);
 const Permission = permissionModel(sequelize, Sequelize);
 const Qa = qaModel(sequelize, Sequelize);
+const Shipping = shippingModel(sequelize, Sequelize);
 const Sale = saleModel(sequelize, Sequelize);
-const ShoppingC = shoppingCModel(sequelize, Sequelize);
-const ShoppingCI = shoppingCIModel(sequelize, Sequelize);
+const Order = orderModel(sequelize, Sequelize);
+const OrderDetails = orderDetailsModel(sequelize, Sequelize);
 const UserP = userPModel(sequelize, Sequelize);
 const ImageCarr = imageCarrModel(sequelize, Sequelize);
 const ImgInProduct = imgInProdModel(sequelize, Sequelize);
@@ -54,10 +56,12 @@ module.exports = {
     Permission,
     Qa,
     Sale,
-    ShoppingC,
-    ShoppingCI,
+    Shipping,
+    Order,
+    OrderDetails,
     UserP,
     ImageCarr,
     ImgInProduct,
-    Video
+    Video,
+
 }

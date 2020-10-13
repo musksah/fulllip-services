@@ -14,11 +14,11 @@ module.exports = (sequelize, type) => {
                 key: 'id_pay_method'
             }
         },
-        id_shopping_cart: {
+        id_order: {
             type: type.BIGINT,
             references: {
-                model: 'shopping_cart',
-                key: 'id_shopping_cart'
+                model: 'order',
+                key: 'id_order'
             }
         }
     }, {
