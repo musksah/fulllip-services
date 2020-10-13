@@ -28,18 +28,18 @@ INSERT INTO `advice` (`id_advice`, `name`, `description`, `createdAt`, `updatedA
 (2, 'Consejos', '- Hidratar el área alrededor de la boca.</br></br>- No sobrepases la succión después de 10-15 segundos para empezar.</br></br>- El uso de tu potenciador fullips NO debería doler.</br></br>- Si tiene inyecciones, problemas médicos dentales, estos NO deben usarse.</br></br>- Dejar el potenciador inmóvil en los labios durante demasiado tiempo puede dejar una marca roja clara alrededor de tu boca, esto debería desaparecer después de unos minutos.</br></br>- Tiempo: Un mes es el período de tiempo de aprendizaje para adaptar el producto al resultado deseado.</br></br>- Hidratación : Estar hidratado y humectar los labios hacen una gran diferencia.</br></br>- Brillo y delineador: Si usas un delineador y un brillo de relleno esto ayudará a prolongar el efecto, es casi como si eso ayudara a retener el líquido allí. El lápiz labial mate, por otro lado, hace que el efecto disminuya más rápido, ya que tiende a ser más seco. Si no te gusta sellar los labios con efecto brillo, puedes usar  algo como un hidratante de labios común esté también funcionara, nuevamente debido a la humedad.</br></br>- Hazlo un fin de semana cuando no tengas que trabajar, para que puedas experimentar.', '2020-09-17 00:00:00', '2020-09-17 00:00:00'),
 (3, 'Precaución', '- Cualquier persona que haya recibido inyecciones y/o rellenos labiales NO debe usar fullips.</br></br>\r\n- Si tus labios o boca están bajo el cuidado de un médico, el uso de este producto siempre debe ser aprobado primero por tu médico.</br></br>\r\n- Si tienes alguna inquietud sobre el uso de este producto o tienes alguna inquietud sobre la salud, consulta con tu médico.</br></br> \r\n- Si tienes problemas con tus dientes, encías, lengua, problemas bucales, cirugía oral, herpes labial, hematomas, sangrado, medicamentos, problemas para diluir la sangre o tomas medicamentos anticoagulantes, consulta primero con tu médico.</br></br> \r\n- Si tienes una reacción alérgica, deja de usarlo y llama a tu médico de inmediato. <b>Esto no es un juguete y no debe ser utilizado por menores de 18 años. Mantener fuera del alcance de los niños.</b>\r\n', '2020-09-17 00:00:00', '2020-09-17 00:00:00');
 
-INSERT INTO item (id_item,name,description,weight,price,quantity,createdAt,updatedAt) VALUES 
-(1,'Kit','El kit de productos contiene más productos de lo normal y puedes probar todos los productos, para que escogas cual se adecua mejor a tu boca.','10kg',150000,10,'2020-09-17 02:12:20.0','2020-09-17 02:12:20.0')
-,(2,'Grande Redondo','El producto grande redondo es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites..','10kg',100000,10,'2020-09-17 02:13:30.0','2020-09-17 02:13:30.0')
-,(3,'Mediano Ovalado','El producto mediano ovalado es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:13:53.0','2020-09-17 02:13:53.0')
-,(4,'Pequeño Ovalado','El producto pequeño ovalado es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:14:12.0','2020-09-17 02:14:12.0');
+INSERT INTO item (id_item,name,subtitle,description,weight,price,quantity,createdAt,updatedAt) VALUES 
+(1,'Kit','Producto promocionado','El kit de productos contiene más productos de lo normal y puedes probar todos los productos, para que escogas cual se adecua mejor a tu boca.','10kg',150000,10,'2020-09-17 02:12:20.0','2020-09-17 02:12:20.0')
+,(2,'Grande Redondo','Producto unitario','El producto grande redondo es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites..','10kg',100000,10,'2020-09-17 02:13:30.0','2020-09-17 02:13:30.0')
+,(3,'Mediano Ovalado','Producto unitario','El producto mediano ovalado es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:13:53.0','2020-09-17 02:13:53.0')
+,(4,'Pequeño Ovalado','Producto unitario','El producto pequeño ovalado es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:14:12.0','2020-09-17 02:14:12.0');
 
 
-INSERT INTO image_item (id_image_item,name,subtitle,url,type_image,`size`,priority_field,weight,id_item,createdAt,updatedAt) VALUES 
-(1,'Kit','Producto promocionado','/img/kit.jpg','jpg','2mb',1,'2mb',1,'2020-09-17 03:35:59.0','2020-09-17 03:35:59.0')
-,(2,'Largo Redondo','Producto unitario','/img/LargeRound.jpg','jpg','2mb',1,'2mb',2,'2020-09-17 03:36:53.0','2020-09-17 03:36:53.0')
-,(3,'Ovalo Mediano','Producto unitario','/img/MediumOval.jpg','jpg','2mb',1,'2mb',3,'2020-09-17 03:37:43.0','2020-09-17 03:37:43.0')
-,(4,'Ovalo Pequeño','Producto unitario','/img/MediumOval.jpg','jpg','2mb',1,'2mb',4,'2020-09-17 03:37:59.0','2020-09-17 03:37:59.0');
+INSERT INTO image_item (id_image_item,name, url,type_image,`size`,priority_field,weight,id_item,createdAt,updatedAt) VALUES 
+(1,'Kit','/img/kit.jpg','jpg','2mb',1,'2mb',1,'2020-09-17 03:35:59.0','2020-09-17 03:35:59.0')
+,(2,'Largo Redondo','/img/LargeRound.jpg','jpg','2mb',1,'2mb',2,'2020-09-17 03:36:53.0','2020-09-17 03:36:53.0')
+,(3,'Ovalo Mediano','/img/MediumOval.jpg','jpg','2mb',1,'2mb',3,'2020-09-17 03:37:43.0','2020-09-17 03:37:43.0')
+,(4,'Ovalo Pequeño','/img/MediumOval.jpg','jpg','2mb',1,'2mb',4,'2020-09-17 03:37:59.0','2020-09-17 03:37:59.0');
 
 INSERT INTO `video` (`id_video`, `title`, `url`, `description`, `createdAt`, `updatedAt`) VALUES 
 (1, 'Pequeño Ovalado', 'https://www.youtube.com/watch?time_continue=4&v=C20sxH4Ss80&feature=emb_logo&app=desktop', '', '2020-09-21 00:00:00', '2020-09-21 00:00:00'), 
