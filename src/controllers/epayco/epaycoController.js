@@ -2,6 +2,7 @@ const crypto = require('crypto');
 
 
 module.exports.confirmationPayment = (req, res) => {
+    console.log("Consultando la confirmación");
     const cust_id_cliente = "AJK12312312";
     const p_key = "AJK12312312";
 
