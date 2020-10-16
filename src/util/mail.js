@@ -1,12 +1,13 @@
 
 var nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
-const {smtp} = require('../keys')
+const { smtp } = require('../keys');
+const fs = require('fs');
 
 class Mail {
-    sendEmailConfirmation(token) {
-        const decoded = jwt.decode(token);
-        const transporter = nodemailer.createTransport({
+
+    constructor() {
+        this.transporter = nodemailer.createTransport({
             host: smtp.host,
             port: smtp.port,
             secure: false,
@@ -18,17 +19,49 @@ class Mail {
                 rejectUnauthorized: false
             }
         });
+    }
+
+    sendEmailConfirmation(token) {
+        const decoded = jwt.decode(token);
         const host = process.env.DB_HOST || 'fullipscolombia.com';
+
+        let html_template = '';
+        fs.readFile(__dirname+'/email/contact.html', (err, data) => {
+            if (err) throw err;
+            console.log('template: '+data);
+        });
+
+        // var mailOptions = {
+        //     from: smtp.user,
+        //     to: `${decoded.email}`,
+        //     subject: "Confirma tu correo electrónico",
+        //     html: `
+        //     <h1>Hola ${decoded.name}</h1>
+        //     <p>Confirma tu correo electrónico:</p>
+        //     <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
+        // }
+        // this.transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         return `${error.message}`;
+        //     } else {
+        //         return "Confirmación enviada";
+        //     }
+        // });
+    }
+
+    sendMailContact(params) {
         var mailOptions = {
             from: smtp.user,
-            to:`${decoded.email}`,
-            subject: "Confirma tu correo electrónico",
+            to: `xsebastianhrodriguezx@gmail.com`,
+            subject: "Mensaje de Contacto desde Fullips Colombia",
             html: `
-            <h1>Hola ${decoded.name}</h1>
-            <p>Confirma tu correo electrónico:</p>
-            <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
+            <h1>Este correo fue generado desde el sitio web de fullips colombia</h1>
+            <p>Asunto: ${params.subject}</p>
+            <p>Nombre: ${params.name} ${params.lastname}</p>
+            <p>Mensaje: ${params.message} </p>
+            `
         }
-        transporter.sendMail(mailOptions, (error, info) => {
+        this.transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return `${error.message}`;
             } else {
