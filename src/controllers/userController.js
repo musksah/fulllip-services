@@ -117,3 +117,12 @@ module.exports.updatePassword = async (req, res) => {
         }
     });
 }
+
+module.exports.updateEmail = async (req) => {
+
+    const [numberOfAffectedRows, affectedRows] = await User.update({ email: req.body.email }, {
+        where: { id_user: req.body.usuario },
+        returning: true
+    });
+    return "El correo fue actualizado.";
+}

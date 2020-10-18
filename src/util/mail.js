@@ -26,9 +26,9 @@ class Mail {
         const host = process.env.DB_HOST || 'fullipscolombia.com';
 
         let html_template = '';
-        fs.readFile(__dirname+'/email/contact.html', (err, data) => {
+        fs.readFile(__dirname + '/email/contact.html', (err, data) => {
             if (err) throw err;
-            console.log('template: '+data);
+            console.log('template: ' + data);
         });
 
         // var mailOptions = {
@@ -72,6 +72,21 @@ class Mail {
 
     setToken(token) {
         this.token = token;
+    }
+
+    sendMailChange(params) {
+        console.log(params);
+        var mailOptions = {
+            from: smtp.user,
+            to: params.email,
+            subject: '',
+            html: ''
+        }
+        return Promise.resolve(this.transporter.sendMail(mailOptions).then(() => {
+            return "ok";
+        }).catch(() => {
+            return "error";
+        }));
     }
 
 }
