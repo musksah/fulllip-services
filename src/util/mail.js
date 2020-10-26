@@ -29,24 +29,24 @@ class Mail {
         fs.readFile(__dirname + '/email/contact.html', (err, data) => {
             if (err) throw err;
             console.log('template: ' + data);
-        });
 
-        // var mailOptions = {
-        //     from: smtp.user,
-        //     to: `${decoded.email}`,
-        //     subject: "Confirma tu correo electrónico",
-        //     html: `
-        //     <h1>Hola ${decoded.name}</h1>
-        //     <p>Confirma tu correo electrónico:</p>
-        //     <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
-        // }
-        // this.transporter.sendMail(mailOptions, (error, info) => {
-        //     if (error) {
-        //         return `${error.message}`;
-        //     } else {
-        //         return "Confirmación enviada";
-        //     }
-        // });
+            var mailOptions = {
+                from: smtp.user,
+                to: `${decoded.email}`,
+                subject: "Confirma tu correo electrónico",
+                html: `
+                <h1>Hola ${decoded.name}</h1>
+                <p>Confirma tu correo electrónico:</p>
+                <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
+            }
+            this.transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return `${error.message}`;
+                } else {
+                    return "Confirmación enviada";
+                }
+            });
+        });
     }
 
     sendMailContact(params) {

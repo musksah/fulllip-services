@@ -19,7 +19,7 @@ module.exports = {
     smtp:{
         host:'smtp.flockmail.com',
         port: '587',
-        user:'info@sebastian-hr.com',
+        user:'admin@sebastian-hr.com',
         password: 'D4nt3d3inf3rn0'
     }
 };

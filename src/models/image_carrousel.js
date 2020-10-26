@@ -9,6 +9,8 @@ module.exports = (sequelize, type) => {
         title: type.STRING,
         subtitle: type.STRING,
         url: type.STRING,
+        url_mobile: type.STRING,
+        url_tablet: type.STRING,
         type_image: type.STRING,
         size: type.STRING,
         weight: type.STRING,

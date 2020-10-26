@@ -2,10 +2,10 @@ INSERT INTO `rol` (`id_rol`, `name`, `permission_list`, `createdAt`, `updatedAt`
 (1, 'Cliente', 'Pendiente', '2020-09-05 00:00:00', '2020-09-05 00:00:00'),
 (2, 'Administrador', 'Pendiente', '2020-09-05 00:00:00', '2020-09-05 00:00:00');
 
-INSERT INTO `image_carrousel` (`id_image_carrousel`, `name`, `title`, `subtitle`, `url`, `type_image`, `size`, `weight`, `createdAt`, `updatedAt`) VALUES
-(1, 'BANNER-FRUTAS', 'Imagen 01', 'img/index/banner/banner_mobile_1.jpg', 'img/index/banner/banner_web_1.jpg', 'jpg', '2mb', '2mb', '2020-10-02 04:05:26', '2020-10-02 04:05:26'),
-(2, 'BANNER-GLOSSY', 'Imagen 02', 'img/index/banner/banner_mobile_2.jpg', 'img/index/banner/banner_web_2.jpg', 'jpg', '2mb', '2mb', '2020-10-02 04:05:30', '2020-10-02 04:05:30'),
-(3, 'BANNER-CANDY', 'Imagen 03', 'img/index/banner/banner_mobile_3.jpg', 'img/index/banner/banner_web_3.jpg', 'jpg', '2mb', '2mb', '2020-10-02 04:05:35', '2020-10-02 04:05:35');
+INSERT INTO `image_carrousel` (`id_image_carrousel`, `name`, `title`, `subtitle`, `url`,`url_mobile`,`url_tablet`,`type_image`, `size`, `weight`, `createdAt`, `updatedAt`) VALUES
+(1, 'BANNER-FRUTAS', 'Imagen 01', 'img/index/banner/banner_mobile_1.jpg', 'img/index/banner/banner_web_1.jpg','img/index/banner/banner_mobile_1.jpg','img/index/banner/banner_ipad_1.png', 'jpg', '2mb', '2mb', '2020-10-02 04:05:26', '2020-10-02 04:05:26'),
+(2, 'BANNER-GLOSSY', 'Imagen 02', 'img/index/banner/banner_mobile_2.jpg', 'img/index/banner/banner_web_2.jpg','img/index/banner/banner_mobile_2.jpg','img/index/banner/banner_ipad_2.png', 'jpg', '2mb', '2mb', '2020-10-02 04:05:30', '2020-10-02 04:05:30'),
+(3, 'BANNER-CANDY', 'Imagen 03', 'img/index/banner/banner_mobile_3.jpg', 'img/index/banner/banner_web_3.jpg','img/index/banner/banner_mobile_3.jpg','img/index/banner/banner_ipad_3.png', 'jpg', '2mb', '2mb', '2020-10-02 04:05:35', '2020-10-02 04:05:35');
 
 INSERT INTO img_index_product (id_image_index_product,name,title,subtitle,url,type_image,`size`,weight,img_parent_id,createdAt,updatedAt) VALUES 
 (1,'/img/index/products/1.1kit_segunda.jpg','Kit','/img/index/products/1.0kit_portada.jpg','/img/index/products/1.0kit_portada.jpg','jpg','2mb','2mb',0,'2020-10-02 04:06:19.0','2020-10-02 04:06:19.0')
@@ -44,22 +44,22 @@ INSERT INTO item (id_item,name,subtitle,description,weight,price,stock,createdAt
 ,(4,'Pequeño Óvalo','Producto unitario','El producto pequeño Óvalo es la mejor opción para tu boca porque puedes usarlo en cada momento que lo necesites.','10kg',100000,10,'2020-09-17 02:14:12.0','2020-09-17 02:14:12.0');
 
 INSERT INTO `image_item` (`id_image_item`, `name`, `url`, `type_image`, `size`, `priority_field`, `weight`, `id_item`, `createdAt`, `updatedAt`) VALUES
-(1, 'Kit', '/img/producto/4.0kit.JPG', 'jpg', '2mb', 1, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(2, 'Grande Redondo', '/img/producto/2.0_Grande.jpeg', 'jpg', '2mb', 1, '2mb', 2, '2020-09-17 03:36:53', '2020-09-17 03:36:53'),
-(3, 'Mediano Óvalo', '/img/producto/1.0_Mediano.jpeg', 'jpg', '2mb', 1, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
-(4, 'Pequeño Óvalo', '/img/producto/3.0_pequeño.jpeg', 'jpg', '2mb', 1, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
-(5, 'Kit', '/img/producto/4.1kit.JPG', 'jpg', '2mb', 2, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(6, 'Kit', '/img/producto/4.2kit.JPG', 'jpg', '2mb', 3, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(7, 'Kit', '/img/producto/4.3kit.JPG', 'jpg', '2mb', 4, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(8, 'Grande Redondo', '/img/producto/2.1_Grande.jpeg', 'jpg', '2mb', 2, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(9, 'Grande Redondo', '/img/producto/2.2_Grande.jpeg', 'jpg', '2mb', 3, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(10, 'Grande Redondo', '/img/producto/2.4_grande.jpeg', 'jpg', '2mb', 4, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
-(11, 'Mediano Óvalo', '/img/producto/1.1_Mediano.jpeg', 'jpg', '2mb', 2, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
-(12, 'Mediano Óvalo', '/img/producto/1.2_Mediano.jpeg', 'jpg', '2mb', 3, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
-(13, 'Mediano Óvalo', '/img/producto/1.4_Mediano.jpeg', 'jpg', '2mb', 4, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
-(14, 'Pequeño Óvalo', '/img/producto/3.1_pequeño.jpeg', 'jpg', '2mb', 2, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
-(15, 'Pequeño Óvalo', '/img/producto/3.2_pequeño.jpeg', 'jpg', '2mb', 3, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
-(16, 'Pequeño Óvalo', '/img/producto/3.4_Pequeño.jpeg', 'jpg', '2mb', 4, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59');
+(1, 'Kit', '/img/producto/4.1_Kit.png', 'jpg', '2mb', 1, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(2, 'Grande Redondo', '/img/producto/2.1_Grande.png', 'jpg', '2mb', 1, '2mb', 2, '2020-09-17 03:36:53', '2020-09-17 03:36:53'),
+(3, 'Mediano Óvalo', '/img/producto/1.1_Mediano.png', 'jpg', '2mb', 1, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
+(4, 'Pequeño Óvalo', '/img/producto/3.1_Pequenio.png', 'jpg', '2mb', 1, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
+(5, 'Kit', '/img/producto/4.2_Kit.png', 'jpg', '2mb', 2, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(6, 'Kit', '/img/producto/4.3_Kit.png', 'jpg', '2mb', 3, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(7, 'Kit', '/img/producto/4.4_Kit.png', 'jpg', '2mb', 4, '2mb', 1, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(8, 'Grande Redondo', '/img/producto/2.2_Grande.png', 'jpg', '2mb', 2, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(9, 'Grande Redondo', '/img/producto/2.3_Grande.png', 'jpg', '2mb', 3, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(10, 'Grande Redondo', '/img/producto/2.4_Grande.png', 'jpg', '2mb', 4, '2mb', 2, '2020-09-17 03:35:59', '2020-09-17 03:35:59'),
+(11, 'Mediano Óvalo', '/img/producto/1.2_Mediano.png', 'jpg', '2mb', 2, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
+(12, 'Mediano Óvalo', '/img/producto/1.3_Mediano.png', 'jpg', '2mb', 3, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
+(13, 'Mediano Óvalo', '/img/producto/1.4_Mediano.png', 'jpg', '2mb', 4, '2mb', 3, '2020-09-17 03:37:43', '2020-09-17 03:37:43'),
+(14, 'Pequeño Óvalo', '/img/producto/3.1_Pequenio.png', 'jpg', '2mb', 2, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
+(15, 'Pequeño Óvalo', '/img/producto/3.2_Pequenio.png', 'jpg', '2mb', 3, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59'),
+(16, 'Pequeño Óvalo', '/img/producto/3.3_Pequenio.png', 'jpg', '2mb', 4, '2mb', 4, '2020-09-17 03:37:59', '2020-09-17 03:37:59');
 
 INSERT INTO `video` (`id_video`, `title`, `url`, `description`, `createdAt`, `updatedAt`) VALUES 
 (1, 'Pequeño Óvalo', 'https://www.youtube.com/watch?time_continue=4&v=C20sxH4Ss80&feature=emb_logo&app=desktop', '', '2020-09-21 00:00:00', '2020-09-21 00:00:00'), 
