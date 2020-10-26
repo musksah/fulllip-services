@@ -34,6 +34,7 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.register = (req, res) => {
+    const rol = req.body.rol ? 2 : 1;
     bcrypt.hash(req.body.password, 10, async (err, data) => {
         if (err) {
             console.log(err);
@@ -41,14 +42,16 @@ module.exports.register = (req, res) => {
         } else {
             req.body.password = data;
             try {
-                const user = await User.create({ email: req.body.email, password: req.body.password });
+                const user = await User.create({ email: req.body.email, password: req.body.password, id_rol: rol });
                 if (user) {
                     const mailManager = new MailManager();
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;
                     const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
-                    const response = await mailManager.sendEmailConfirmation(token);
+                    if (parseInt(rol) === 1) {
+                        const response = await mailManager.sendEmailConfirmation(token);
+                    }
                     req.session.id_user = id_user;
                     req.session.name = name;
                     req.session.email = email;
