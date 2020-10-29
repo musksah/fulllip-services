@@ -1,10 +1,11 @@
 const crypto = require('crypto');
+const { Shipping } = require('../../database');
 
 
-module.exports.confirmationPayment = (req, res) => {
+module.exports.confirmationPayment = async (req, res) => {
     console.log("Consultando la confirmación");
-    const cust_id_cliente = "AJK12312312";
-    const p_key = "AJK12312312";
+    const cust_id_cliente = "488979";
+    const p_key = "488979";
 
     const params = req.body;
     let x_ref_payco = params.x_ref_payco;
@@ -12,6 +13,7 @@ module.exports.confirmationPayment = (req, res) => {
     let x_amount = params.x_amount;
     let x_currency_code = params.x_currency_code;
     let x_signature = params.x_signature;
+    let vShiping = params.Shipping;
     let hash_string = `${cust_id_cliente}^${p_key}^${x_ref_payco}^${x_transaction_id}^${x_amount}^${x_currency_code}`;
     const hash_signature = crypto.createHash('sha256').update(hash_string).digest('base64');
 
@@ -21,11 +23,12 @@ module.exports.confirmationPayment = (req, res) => {
     let x_approval_code = params.x_approval_code;
 
     let responsX, message = "";
-    if(x_signature == hash_signature){
+    // if(x_signature == hash_signature){
         let x_cod_response = params.x_cod_response;
         switch (x_cod_response) {
             case 1:
                 message = "transacción aceptada";
+                const shipping = await Shipping.create(vShiping);
                 console.log("transacción aceptada");
                 break;   
             case 2:
@@ -45,10 +48,10 @@ module.exports.confirmationPayment = (req, res) => {
                 console.log("transacción fallida");
                 break;   
         }
-        responsX+="Son iguales";
-    }else{
-        responsX+="Paila";
-    }
+        // responsX+="Son iguales";
+    // }else{
+        // responsX+="Paila";
+    // }
 
 
     
