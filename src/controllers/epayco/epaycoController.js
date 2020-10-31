@@ -14,6 +14,7 @@ module.exports.confirmationPayment = async (req, res) => {
     let x_currency_code = params.x_currency_code;
     let x_signature = params.x_signature;
     let vShiping = params.Shipping;
+    let strParms = JSON.stringify(params)
     let pShiping = {
         address:"Cra 25 # 23 - 45",
         extra_address:"Segundo piso",
@@ -23,7 +24,8 @@ module.exports.confirmationPayment = async (req, res) => {
         country:"Colombia",
         city:"Segundo piso",
         phone:"Segundo piso",
-        agreed_date:"01/12/2020"
+        agreed_date:"01/12/2020",
+        extra_address:strParms
     };
     let hash_string = `${cust_id_cliente}^${p_key}^${x_ref_payco}^${x_transaction_id}^${x_amount}^${x_currency_code}`;
     const hash_signature = crypto.createHash('sha256').update(hash_string).digest('base64');
@@ -129,5 +131,5 @@ module.exports.confirmationPayment = async (req, res) => {
     
     // }   
     // res.json(params);
-    res.json({'data':message});
+    res.json({'data':message, paramsr:params});
 } 
