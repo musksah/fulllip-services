@@ -14,6 +14,17 @@ module.exports.confirmationPayment = async (req, res) => {
     let x_currency_code = params.x_currency_code;
     let x_signature = params.x_signature;
     let vShiping = params.Shipping;
+    let pShiping = {
+        address:"Cra 25 # 23 - 45",
+        extra_address:"Segundo piso",
+        name:"Segundo piso",
+        lastname:"Aceptado",
+        dni_id:"Segundo piso",
+        country:"Colombia",
+        city:"Segundo piso",
+        phone:"Segundo piso",
+        agreed_date:"01/12/2020"
+    };
     let hash_string = `${cust_id_cliente}^${p_key}^${x_ref_payco}^${x_transaction_id}^${x_amount}^${x_currency_code}`;
     const hash_signature = crypto.createHash('sha256').update(hash_string).digest('base64');
 
@@ -28,23 +39,31 @@ module.exports.confirmationPayment = async (req, res) => {
         switch (x_cod_response) {
             case 1:
                 message = "transacción aceptada";
-                const shipping = await Shipping.create(vShiping);
+                let shippinga = await Shipping.create(pShiping);
                 console.log("transacción aceptada");
                 break;   
             case 2:
                 message = "transacción rechazada";
+                pShiping.lastname = "Rechazada";
+                let shippingr = await Shipping.create(pShiping);
                 console.log("transacción rechazada");
                 break;   
             case 3:
                 message = "transacción pendiente";
+                pShiping.lastname = "Pendiente";
+                let shippingp = await Shipping.create(pShiping);
                 console.log("transacción pendiente");
                 break;   
             case 4:
                 message = "transacción fallida";
+                pShiping.lastname = "Fallida";
+                let shippingf = await Shipping.create(pShiping);
                 console.log("transacción fallida");
                 break;   
             default:
                 message = "Opción no valida";
+                pShiping.lastname = "No valida";
+                let shippingnv = await Shipping.create(pShiping);
                 console.log("transacción fallida");
                 break;   
         }
