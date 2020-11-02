@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { Shipping } = require('../../database');
 const { ConfirmationResponse } = require('../../database');
+const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
@@ -18,15 +19,15 @@ module.exports.confirmationPayment = async (req, res) => {
     let responsX, message, shipping, vinsertInfoPayment = "";
 
     let pShiping = {
-        address: "Cra 25 # 23 - 45",
-        extra_address: "Segundo piso",
-        name: "Segundo piso",
-        lastname: "Aceptado",
-        dni_id: hash_signature,
-        country: x_signature,
-        city: responsX,
-        phone: "Segundo piso",
-        agreed_date: "01/12/2020",
+        address: params.x_customer_address,
+        extra_address:  "",
+        name: params.x_customer_name,
+        lastname: params.x_customer_lastname,
+        dni_id: params.x_customer_document,
+        country: params.x_customer_country,
+        city: params.x_customer_city,
+        phone: params.x_customer_movil,
+        agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss"),
         extra_address: strParms
     };
 
@@ -47,25 +48,25 @@ module.exports.confirmationPayment = async (req, res) => {
                 break;
             case 2:
                 message = "transacción rechazada";
-                // insertInfoPayment = await insertInfoPayment(params);
+                vinsertInfoPayment = await insertInfoPayment(params);
                 pShiping.lastname = "Rechazada";
                 shipping = await Shipping.create(pShiping);
                 break;
             case 3:
                 message = "transacción pendiente";
-                // insertInfoPayment = await insertInfoPayment(params);
+                vinsertInfoPayment = await insertInfoPayment(params);
                 pShiping.lastname = "Pendiente";
                 shipping = await Shipping.create(pShiping);
                 break;
             case 4:
                 message = "transacción fallida";
-                // insertInfoPayment = await insertInfoPayment(params);
+                vinsertInfoPayment = await insertInfoPayment(params);
                 pShiping.lastname = "Fallida";
                 shipping = await Shipping.create(pShiping);
                 break;
             default:
                 message = "Opción no valida";
-                // insertInfoPayment = await insertInfoPayment(params);
+                vinsertInfoPayment = await insertInfoPayment(params);
                 pShiping.lastname = "No valida";
                 shippingn = await Shipping.create(pShiping);
                 break;
