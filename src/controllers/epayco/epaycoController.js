@@ -3,10 +3,6 @@ const bcrypt = require('bcrypt');
 const { Shipping } = require('../../database');
 const { ConfirmationResponse } = require('../../database');
 
-function insertInfoPayment(params) {
-    return ConfirmationResponse.create(params);
-}
-
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
     let x_ref_payco = params.x_ref_payco;
@@ -137,6 +133,12 @@ module.exports.confirmationPayment = async (req, res) => {
     res.json({ 'data': message, currency: xCurrencyCode });
 }
 
+function insertInfoPayment(params) {
+    let data = {
+        x_cust_id_cliente: params.x_cust_id_cliente
+    };
+    return ConfirmationResponse.create(data);
+}
 
 function hashPayment(params) {
     //Config
