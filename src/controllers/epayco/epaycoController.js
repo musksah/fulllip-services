@@ -15,7 +15,7 @@ module.exports.confirmationPayment = async (req, res) => {
 
     let hash_signature = await hashPayment(params);
 
-    let responsX, message, shipping, insertInfoPayment = "";
+    let responsX, message, shipping, vinsertInfoPayment = "";
 
     let pShiping = {
         address: "Cra 25 # 23 - 45",
@@ -42,7 +42,7 @@ module.exports.confirmationPayment = async (req, res) => {
             case 1:
                 message = "transacción aceptada";
                 pShiping.lastname = "Aceptado";
-                insertInfoPayment = await insertInfoPayment(params);
+                vinsertInfoPayment = await insertInfoPayment(params);
                 shipping = await Shipping.create(pShiping);
                 break;
             case 2:
@@ -135,7 +135,7 @@ module.exports.confirmationPayment = async (req, res) => {
 
 function insertInfoPayment(params) {
     let data = {
-        x_cust_id_cliente: params.x_cust_id_cliente
+        x_cust_id_cliente: "488979"
     };
     return ConfirmationResponse.create(data);
 }
@@ -150,6 +150,7 @@ function hashPayment(params) {
 
 module.exports.pruebaHash = async (req, res) => {
     let object = {};
-    const hash_signature = await hashPayment(object);
+    const infoP = await insertInfoPayment(object);
+    // const hash_signature = await hashPayment(object);
     res.json({ 'hash': hash_signature });
 }
