@@ -6,6 +6,7 @@ const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
+    let currentTimestamp = moment().unix();
     let x_ref_payco = params.x_ref_payco;
     let x_transaction_id = params.x_transaction_id;
     let x_amount = params.x_amount;
@@ -151,7 +152,9 @@ function hashPayment(params) {
 
 module.exports.pruebaHash = async (req, res) => {
     let object = {};
-    const infoP = await insertInfoPayment(object);
+    // const infoP = await insertInfoPayment(object);
+    let currentTimestamp = moment().unix();
+    const momDate = moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss");
     // const hash_signature = await hashPayment(object);
-    res.json({ 'hash': hash_signature });
+    res.json({ 'hash': momDate });
 }
