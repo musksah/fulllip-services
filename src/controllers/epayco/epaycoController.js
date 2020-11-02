@@ -134,10 +134,10 @@ module.exports.confirmationPayment = async (req, res) => {
 }
 
 function insertInfoPayment(params) {
-    let data = {
-        x_cust_id_cliente: "488979"
-    };
-    return ConfirmationResponse.create(data);
+    // let data = {
+    //     x_cust_id_cliente: "488979"
+    // };
+    return ConfirmationResponse.create(params);
 }
 
 function hashPayment(params) {
