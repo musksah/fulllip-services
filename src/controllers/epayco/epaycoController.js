@@ -7,35 +7,25 @@ const moment = require('moment');
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
     let currentTimestamp = moment().unix();
-    let x_ref_payco = params.x_ref_payco;
-    let x_transaction_id = params.x_transaction_id;
-    let x_amount = params.x_amount;
-    let x_currency_code = params.x_currency_code;
     let x_signature = params.x_signature;
-
-    let strParms = JSON.stringify(params)
+    let x_extra1 = params.x_extra1;
+    const data_address = JSON.parse(x_extra1);
 
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
 
     let pShiping = {
-        address: params.x_customer_address,
-        extra_address:  "",
-        name: params.x_customer_name,
-        lastname: params.x_customer_lastname,
-        dni_id: params.x_customer_document,
-        country: params.x_customer_country,
-        city: params.x_customer_city,
-        phone: params.x_customer_movil,
-        agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss"),
-        extra_address: strParms
+        address: data_address.address,
+        extra_address: data_address.adicional,
+        name: data_address.name,
+        lastname: data_address.lastname,
+        dni_id: data_address.dni_id,
+        country: "Colombia",
+        city: data_address.city,
+        phone: phone.phone,
+        agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
     };
-
-    let x_response = params.x_response;
-    let x_motivo = params.x_response_reason_text;
-    let x_id_invoice = params.x_id_invoice;
-    let x_approval_code = params.x_approval_code;
 
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
@@ -136,9 +126,6 @@ module.exports.confirmationPayment = async (req, res) => {
 }
 
 function insertInfoPayment(params) {
-    // let data = {
-    //     x_cust_id_cliente: "488979"
-    // };
     return ConfirmationResponse.create(params);
 }
 
