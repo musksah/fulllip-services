@@ -9,23 +9,35 @@ module.exports.confirmationPayment = async (req, res) => {
     let currentTimestamp = moment().unix();
     let x_signature = params.x_signature;
     let x_extra1 = params.x_extra1;
-    const data_address = JSON.parse(x_extra1);
+    // const data_address = JSON.parse(x_extra1);
 
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
 
     let pShiping = {
-        address: data_address.address,
-        extra_address: data_address.adicional,
-        name: data_address.name,
-        lastname: data_address.lastname,
-        dni_id: data_address.dni_id,
+        address: params.x_customer_address,
+        extra_address: "",
+        name: params.name,
+        lastname: params.x_customer_name,
+        dni_id: params.x_customer_document,
         country: "Colombia",
-        city: data_address.city,
-        phone: phone.phone,
+        city: params.x_customer_city,
+        phone: params.x_customer_phone,
         agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
     };
+
+    // let pShiping = {
+    //     address: data_address.address,
+    //     extra_address: data_address.adicional,
+    //     name: data_address.name,
+    //     lastname: data_address.lastname,
+    //     dni_id: data_address.dni_id,
+    //     country: "Colombia",
+    //     city: data_address.city,
+    //     phone: data_address.phone,
+    //     agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
+    // };
 
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
