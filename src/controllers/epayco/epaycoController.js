@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const { Shipping } = require('../../database');
 const { ConfirmationResponse } = require('../../database');
 
@@ -8,7 +9,6 @@ function insertInfoPayment(params){
 
 module.exports.confirmationPayment = async (req, res) => {
     const cust_id_cliente = "488979";
-    const p_key = "8f10f973a83342f4e06e7a0207885f5f1919c1b7";
 
     const params = req.body;
     let x_ref_payco = params.x_ref_payco;
@@ -19,11 +19,8 @@ module.exports.confirmationPayment = async (req, res) => {
 
     let strParms = JSON.stringify(params)
 
-    let hash_string = `${cust_id_cliente}^${p_key}^${x_ref_payco}^${x_transaction_id}^${x_amount}^${x_currency_code}`;
-    const hash_signature = crypto.createHash('sha256').update(hash_string).digest('base64');
+    let hash_signature = await hashPayment(params);
 
-    let x_signature = params.x_signature;
-    
     let responsX, message, shipping, insertInfoPayment   = "";
 
     if(hash_signature == x_signature){
@@ -49,7 +46,6 @@ module.exports.confirmationPayment = async (req, res) => {
     let x_motivo = params.x_response_reason_text;
     let x_id_invoice = params.x_id_invoice;
     let x_approval_code = params.x_approval_code;
-    let x_signature = params.x_signature;
 
     // if(x_signature == hash_signature){
     let x_cod_response = parseInt(params.x_cod_response);
@@ -201,3 +197,18 @@ module.exports.confirmationPayment = async (req, res) => {
 
     res.json({ 'data': message, currency: xCurrencyCode });
 } 
+
+
+function hashPayment(params){
+    //Config
+    let p_cust_id_cliente = "488979";
+    let p_key = "8f10f973a83342f4e06e7a0207885f5f1919c1b7";
+    let hash_string = `${p_cust_id_cliente}^${p_key}^${params.x_ref_payco}^${params.x_transaction_id}^${params.x_amount}^${params.x_currency_code}`;
+    return crypto.createHash('sha256').update(hash_string).digest('hex');
+}
+
+module.exports.pruebaHash = async (req, res) => {
+    let object = {};
+    const hash_signature = await hashPayment(object);
+    res.json({ 'hash': hash_signature });
+}
