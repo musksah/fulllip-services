@@ -17,6 +17,7 @@ drop table item;
 drop table customer;
 drop table user;
 drop table rol;
+drop table confirmation_response;
 
 
 
