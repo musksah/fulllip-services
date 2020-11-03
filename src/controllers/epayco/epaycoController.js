@@ -9,24 +9,40 @@ module.exports.confirmationPayment = async (req, res) => {
     let currentTimestamp = moment().unix();
     let x_signature = params.x_signature;
     let x_extra1 = params.x_extra1;
-    let dir_json = await IsValidJSONString(x_extra1);
-    // const data_address = JSON.parse(x_extra1);
+    let valid_json_dir = await IsValidJSONString(x_extra1);
+    let pShiping = "";
+    if(valid_json_dir){
+        let jsonDirInfo = JSON.parse(x_extra1);
+        pShiping = {
+            address: jsonDirInfo.address,
+            extra_address: jsonDirInfo.adicional,
+            name: jsonDirInfo.name,
+            lastname: jsonDirInfo.lastname,
+            dni_id: jsonDirInfo.x_customer_document,
+            country: "Colombia",
+            city: jsonDirInfo.city,
+            phone: jsonDirInfo.phone,
+            agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
+        };
+    }else{
+        pShiping = {
+            address: params.x_customer_address,
+            extra_address: "Json no válido",
+            name: params.name,
+            lastname: params.x_customer_name,
+            dni_id: params.x_customer_document,
+            country: "Colombia",
+            city: params.x_customer_city,
+            phone: params.x_customer_phone,
+            agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
+        };
+    }
 
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
 
-    let pShiping = {
-        address: params.x_customer_address,
-        extra_address: dir_json,
-        name: params.name,
-        lastname: params.x_customer_name,
-        dni_id: params.x_customer_document,
-        country: "Colombia",
-        city: params.x_customer_city,
-        phone: params.x_customer_phone,
-        agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
-    };
+    
 
     // let pShiping = {
     //     address: data_address.address,
@@ -141,14 +157,12 @@ module.exports.confirmationPayment = async (req, res) => {
 }
 
 function IsValidJSONString(str) {
-    let x_adicional = "";
     try {
-       let json_extra1 = JSON.parse(str);
-       x_adicional = json_extra1.adicional
+       JSON.parse(str);
     } catch (e) {
-        return "No es válido "+e;
+        return false;
     }
-    return x_adicional;
+    return true;
 }
 
 function insertInfoPayment(params) {
