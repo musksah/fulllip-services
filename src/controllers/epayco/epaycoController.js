@@ -11,29 +11,43 @@ module.exports.confirmationPayment = async (req, res) => {
     //Información de envío
     let x_extra1 = params.x_extra1;
     let valid_json_dir = await IsValidJSONString(x_extra1);
-    let pShiping = await getShippingInfo(params, valid_json_dir);
+    //let pShiping = await getShippingInfo(params, valid_json_dir);
     //Información del customer
-    let x_extra2 = params.x_extra2;
-    let valid_json_cust = await IsValidJSONString(x_extra2);
-    let pCustomeer = await getCustomerInfo(params, valid_json_cust);
+    //let x_extra2 = params.x_extra2;
+    //let valid_json_cust = await IsValidJSONString(x_extra2);
+    //let pCustomeer = await getCustomerInfo(params, valid_json_cust);
+    let pShiping = "";
+    if (valid_json_dir) {
+        let jsonDirInfo = JSON.parse(x_extra1);
+        pShiping = {
+            address: jsonDirInfo.address,
+            extra_address: jsonDirInfo.adicional,
+            name: jsonDirInfo.name,
+            lastname: jsonDirInfo.lastname,
+            dni_id: jsonDirInfo.dni_id,
+            country: "Colombia",
+            city: jsonDirInfo.city,
+            phone: jsonDirInfo.phone,
+            agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
+        };
+    } else {
+        pShiping = {
+            address: params.x_customer_address,
+            extra_address: "Json no válido",
+            name: params.name,
+            lastname: params.x_customer_name,
+            dni_id: params.x_customer_document,
+            country: "Colombia",
+            city: params.x_customer_city,
+            phone: params.x_customer_phone,
+            agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
+        };
+    }
 
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
 
-
-
-    // let pShiping = {
-    //     address: data_address.address,
-    //     extra_address: data_address.adicional,
-    //     name: data_address.name,
-    //     lastname: data_address.lastname,
-    //     dni_id: data_address.dni_id,
-    //     country: "Colombia",
-    //     city: data_address.city,
-    //     phone: data_address.phone,
-    //     agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
-    // };
     let id_shipping = "";
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
