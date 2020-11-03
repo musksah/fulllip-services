@@ -9,6 +9,7 @@ module.exports.confirmationPayment = async (req, res) => {
     let currentTimestamp = moment().unix();
     let x_signature = params.x_signature;
     let x_extra1 = params.x_extra1;
+    let dir_json = await IsValidJSONString(x_extra1);
     // const data_address = JSON.parse(x_extra1);
 
     let hash_signature = await hashPayment(params);
@@ -17,14 +18,14 @@ module.exports.confirmationPayment = async (req, res) => {
 
     let pShiping = {
         address: params.x_customer_address,
-        extra_address: "",
+        extra_address: dir_json,
         name: params.name,
         lastname: params.x_customer_name,
         dni_id: params.x_customer_document,
         country: "Colombia",
         city: params.x_customer_city,
         phone: params.x_customer_phone,
-        agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
+        agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
     };
 
     // let pShiping = {
@@ -38,7 +39,7 @@ module.exports.confirmationPayment = async (req, res) => {
     //     phone: data_address.phone,
     //     agreed_date: moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss")
     // };
-
+    let id_shipping = "";
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
         let x_cod_response = parseInt(params.x_cod_response);
@@ -47,7 +48,9 @@ module.exports.confirmationPayment = async (req, res) => {
                 message = "transacción aceptada";
                 pShiping.lastname = "Aceptado";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                shipping = await Shipping.create(pShiping);
+                let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
+                    id_shipping = confirmation_response.id_confirmation_response;
+                });
                 break;
             case 2:
                 message = "transacción rechazada";
@@ -137,6 +140,15 @@ module.exports.confirmationPayment = async (req, res) => {
     res.json({ 'data': message, currency: xCurrencyCode });
 }
 
+function IsValidJSONString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return "No es válido";
+    }
+    return "Válido";
+}
+
 function insertInfoPayment(params) {
     return ConfirmationResponse.create(params);
 }
@@ -153,7 +165,22 @@ module.exports.pruebaHash = async (req, res) => {
     let object = {};
     // const infoP = await insertInfoPayment(object);
     let currentTimestamp = moment().unix();
-    const momDate = moment(currentTimestamp*1000).format("YYYY-MM-DD HH:mm:ss");
+    let response = "";
+    try {
+        nonExistentFunction();
+    } catch (error) {
+        response += "Mal"
+        console.error(error);
+        // expected output: ReferenceError: nonExistentFunction is not defined
+        // Note - error messages will vary depending on browser
+    }
+    let id_d = "";
+    let x_insert = await ConfirmationResponse.create({ x_cust_id_cliente: "12233333333" }).then(function (confirmation_response) {
+        console.log(confirmation_response.id_confirmation_response);
+        id_d = confirmation_response.id_confirmation_response;
+    });;
+
+    const momDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
     // const hash_signature = await hashPayment(object);
-    res.json({ 'hash': momDate });
+    res.json({ 'hash': momDate, responseQ: id_d });
 }
