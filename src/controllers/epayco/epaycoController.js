@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { Shipping } = require('../../database');
-const { ConfirmationResponse } = require('../../database');
+const { ConfirmationResponse, Order, Shipping } = require('../../database');
 const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
@@ -13,15 +12,22 @@ module.exports.confirmationPayment = async (req, res) => {
     let valid_json_dir = await IsValidJSONString(x_extra1);
     //let pShiping = await getShippingInfo(params, valid_json_dir);
     //Información del customer
-    //let x_extra2 = params.x_extra2;
-    //let valid_json_cust = await IsValidJSONString(x_extra2);
+    let x_extra2 = params.x_extra2;
+    let valid_json_cust = await IsValidJSONString(x_extra2);
     //let pCustomeer = await getCustomerInfo(params, valid_json_cust);
-    let pShiping = "";
+    let pShiping, pCustomerId = "";
+
+    if(valid_json_cust){
+        let jsonCustomerInfo = JSON.parse(x_extra2);
+        pCustomerId = jsonCustomerInfo.customer_id;
+    }
+
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
         pShiping = {
             address: jsonDirInfo.address,
-            extra_address: jsonDirInfo.adicional,
+            // extra_address: jsonDirInfo.adicional,
+            extra_address: pCustomerId,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
