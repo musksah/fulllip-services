@@ -141,12 +141,14 @@ module.exports.confirmationPayment = async (req, res) => {
 }
 
 function IsValidJSONString(str) {
+    let x_adicional = "";
     try {
-        JSON.parse(str);
+       let json_extra1 = JSON.parse(str);
+       x_adicional = json_extra1.adicional
     } catch (e) {
-        return "No es válido";
+        return "No es válido "+e;
     }
-    return "Válido";
+    return x_adicional;
 }
 
 function insertInfoPayment(params) {
