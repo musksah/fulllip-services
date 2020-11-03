@@ -120,6 +120,20 @@ module.exports.updatePassword = async (req, res) => {
         }
     });
 }
+module.exports.updatePasswordEmail = async (req, res) => {
+    bcrypt.hash(req.body.password, 10, async (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            const [numberOfAffectedRows, affectedRows] = await User.update({ password: data }, {
+                where: { email: req.params.id },
+                returning: true
+            });
+            res.status(200).send({ message: "La contraseña fue actualizada." });
+        }
+    }
+    );
+}
 
 module.exports.updateEmail = async (req) => {
 
@@ -128,4 +142,37 @@ module.exports.updateEmail = async (req) => {
         returning: true
     });
     return "El correo fue actualizado.";
+}
+
+module.exports.findOne = async (req, res) => {
+    const mailManager = new MailManager();
+    User.hasOne(Customer, { foreignKey: 'id_user' });
+    const user = await User.findOne({ where: { email: req.body.email }, include: [Customer] });
+    if (user) {
+        const { id_user, email } = user;
+        const { name, lastname } = user.customer;
+        console.log(id_user);
+        console.log(email);
+        console.log(name);
+        console.log(lastname);
+        const token = jwt.sign({ id_user, name, lastname, email }, keytoken, { expiresIn: '1h' });
+        console.log(token);
+        mailManager.sendChangePassword(token);
+        res.json({ message: "El correo fue enviado correctamente" });
+    } else {
+        res.status(201).send({ message: "Correo Inválido" });
+    }
+};
+
+module.exports.confirmationEmail = async (req, res) => {
+    const token = req.params.token;
+    jwt.verify(token, keytoken, (err, decoded) => {
+        if (err) {
+            res.status(201).send({ message: "Token no válido." });
+            console.log(err);
+        } else {
+            console.log(decoded);
+            res.json(decoded.email);
+        }
+    });
 }

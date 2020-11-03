@@ -89,6 +89,28 @@ class Mail {
         }));
     }
 
+    sendChangePassword(token) {
+        const decoded = jwt.decode(token);
+        const host = process.env.DB_HOST || 'fullipscolombia.com';
+
+        var mailOptions = {
+            from: smtp.user,
+            to: `${decoded.email}`,
+            subject: "Completa tu solicitud de restablecimiento de contraseña",
+            html: `
+                <h1>Hola ${decoded.name} ${decoded.lastname}</h1>
+                <p>Para restablecer tu contraseña debes acceder al siguiente enlace.</p>
+                <a href="http://${host}/change-Password/${token}">http://${host}/change-Password</a>`,
+        }
+        this.transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return `${error.message}`;
+            } else {
+                return "Confirmación enviada";
+            }
+        });
+    }
+
 }
 
 module.exports.MailManager = Mail;
