@@ -15,19 +15,27 @@ module.exports.confirmationPayment = async (req, res) => {
     let x_extra2 = params.x_extra2;
     let valid_json_cust = await IsValidJSONString(x_extra2);
     //let pCustomeer = await getCustomerInfo(params, valid_json_cust);
-    let pShiping, pCustomerId = "";
+    //Información del carrito de compras
+    let x_extra3 = params.x_extra3;
+    let valid_json_shopcart = await IsValidJSONString(x_extra3);
+    
+    let pShiping, pShoppingCart, pCustomerId = "";
 
     if(valid_json_cust){
         let jsonCustomerInfo = JSON.parse(x_extra2);
         pCustomerId = jsonCustomerInfo.customer_id;
     }
 
+    // Datos de la dirección de envío
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
+        let jsonShopCart = JSON.parse(x_extra3);
+        let total = await getTotal(jsonShopCart);
         pShiping = {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
-            extra_address: pCustomerId,
+            // extra_address: pCustomerId,
+            extra_address: total,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -49,6 +57,17 @@ module.exports.confirmationPayment = async (req, res) => {
             agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
         };
     }
+
+    // Datos de los productos
+    // if(valid_json_shopcart){
+    //     let jsonShopCart = JSON.parse(x_extra3);
+    //     getTotal(jsonShopCart);
+    //     pShoppingCart = {
+
+    //     };
+    // }else{
+
+    // }
 
     let hash_signature = await hashPayment(params);
 
@@ -155,6 +174,15 @@ module.exports.confirmationPayment = async (req, res) => {
     res.json({ 'data': message, currency: xCurrencyCode });
 }
 
+function getTotal(data){
+    let total = 0;
+    data.forEach(element => {
+        let subTotal = parseFloat(element['quantity'])*parseFloat(element['price']);
+        total+=subTotal;
+    });
+    return total;
+}
+
 function IsValidJSONString(str) {
     try {
         JSON.parse(str);
@@ -166,6 +194,11 @@ function IsValidJSONString(str) {
 
 function insertInfoPayment(params) {
     return ConfirmationResponse.create(params);
+}
+
+function insertOrderPayment(params){
+    let orderCode = "A2djjdjd";
+    return Order.create(params);
 }
 
 function getCustomerInfo(params, json_validated){
