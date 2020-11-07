@@ -8,6 +8,7 @@ const epaycoController = require('../controllers/epayco/epaycoController');
 router.post('/confirmation-payment', epaycoController.confirmationPayment);
 router.get('/confirmation-payment', epaycoController.confirmationPayment);
 router.post('/hash', epaycoController.pruebaHash);
+router.post('/json', epaycoController.pruebajson);
 
 
 

@@ -30,12 +30,12 @@ module.exports.confirmationPayment = async (req, res) => {
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
         let jsonShopCart = JSON.parse(x_extra3);
-        // let total = await getTotal(jsonShopCart);
+        let total = await getTotal(jsonShopCart);
         pShiping = {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
-            extra_address: pCustomerId,
-            // extra_address: `tv:${total.total_value} tp:${total.total_products}`,
+            // extra_address: pCustomerId,
+            extra_address: `tv:${total.total_value} tp:${total.total_products}`,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -85,7 +85,6 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
-                //let order = await insertOrderPayment(params);
                 break;
             case 2:
                 message = "transacción rechazada";
@@ -204,7 +203,6 @@ function insertInfoPayment(params) {
 
 function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer) {
     let x_invoice = params.x_id_invoice;
-    let x_invoice = total;
     let order = {
         order_code: x_invoice,
         total_products: totalProducts,
@@ -283,4 +281,9 @@ module.exports.pruebaHash = async (req, res) => {
     const momDate = moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss");
     // const hash_signature = await hashPayment(object);
     res.json({ 'hash': momDate, responseQ: id_d });
+}
+
+module.exports.pruebajson = async (req, res) => {
+    let object = {};
+    
 }
