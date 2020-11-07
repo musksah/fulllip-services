@@ -90,9 +90,10 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
-                let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
-                    id_order = order.id_order;
-                });
+                let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId);
+                // let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                //     id_order = order.id_order;
+                // });
                 //let orderDetailsInsert = await insertOrderDetailsPayment(pShoppingCart, id_order);
                 break;
             case 2:
