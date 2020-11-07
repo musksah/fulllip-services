@@ -20,22 +20,27 @@ module.exports.confirmationPayment = async (req, res) => {
     let valid_json_shopcart = await IsValidJSONString(x_extra3);
 
     let pShiping, pShoppingCart, pCustomerId = "";
+    let pTotal = {};
 
     if (valid_json_cust) {
         let jsonCustomerInfo = JSON.parse(x_extra2);
         pCustomerId = jsonCustomerInfo.customer_id;
     }
 
+    if(valid_json_shopcart){
+        let jsonShopCart = JSON.parse(x_extra3);
+        pTotal = await getTotal(jsonShopCart);
+    }
+
     // Datos de la dirección de envío
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
-        let jsonShopCart = JSON.parse(x_extra3);
-        let total = await getTotal(jsonShopCart);
+        
         pShiping = {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
             // extra_address: pCustomerId,
-            extra_address: `tv:${total.total_value} tp:${total.total_products}`,
+            extra_address: `tv:${pTotal.total_value} tp:${pTotal.total_products}`,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -85,6 +90,7 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
+                let order = insertOrderPayment(params,pTotal.total_products, pTotal.total_value,id_shipping,pCustomerId);
                 break;
             case 2:
                 message = "transacción rechazada";
