@@ -30,12 +30,12 @@ module.exports.confirmationPayment = async (req, res) => {
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
         let jsonShopCart = JSON.parse(x_extra3);
-        let total = await getTotal(jsonShopCart);
+        // let total = await getTotal(jsonShopCart);
         pShiping = {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
-            // extra_address: pCustomerId,
-            extra_address: `tv:${total.total_value} tp:${total.total_products}`,
+            extra_address: pCustomerId,
+            // extra_address: `tv:${total.total_value} tp:${total.total_products}`,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
