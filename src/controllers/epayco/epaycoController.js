@@ -18,10 +18,10 @@ module.exports.confirmationPayment = async (req, res) => {
     //Información del carrito de compras
     let x_extra3 = params.x_extra3;
     let valid_json_shopcart = await IsValidJSONString(x_extra3);
-    
+
     let pShiping, pShoppingCart, pCustomerId = "";
 
-    if(valid_json_cust){
+    if (valid_json_cust) {
         let jsonCustomerInfo = JSON.parse(x_extra2);
         pCustomerId = jsonCustomerInfo.customer_id;
     }
@@ -35,7 +35,7 @@ module.exports.confirmationPayment = async (req, res) => {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
             // extra_address: pCustomerId,
-            extra_address: total,
+            extra_address: `tv:${total.total_value} tp:${total.total_products}`,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -85,6 +85,7 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
+                //let order = await insertOrderPayment(params);
                 break;
             case 2:
                 message = "transacción rechazada";
@@ -174,13 +175,18 @@ module.exports.confirmationPayment = async (req, res) => {
     res.json({ 'data': message, currency: xCurrencyCode });
 }
 
-function getTotal(data){
+function getTotal(data) {
+    let jsonTotal = {};
     let total = 0;
+    let totalProducts = 0;
     data.forEach(element => {
-        let subTotal = parseFloat(element['quantity'])*parseFloat(element['price']);
-        total+=subTotal;
+        let subTotal = parseFloat(element['quantity']) * parseFloat(element['price']);
+        totalProducts += parseFloat(element['quantity']);
+        total += subTotal;
     });
-    return total;
+    jsonTotal.total_value = total;
+    jsonTotal.total_products = totalProducts;
+    return jsonTotal;
 }
 
 function IsValidJSONString(str) {
@@ -196,12 +202,20 @@ function insertInfoPayment(params) {
     return ConfirmationResponse.create(params);
 }
 
-function insertOrderPayment(params){
-    let orderCode = "A2djjdjd";
-    return Order.create(params);
+function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer) {
+    let x_invoice = params.x_id_invoice;
+    let x_invoice = total;
+    let order = {
+        order_code: x_invoice,
+        total_products: totalProducts,
+        total_value: totalValue,
+        id_shipping: idShipping,
+        id_customer: idCustomer,
+    };
+    return Order.create(order);
 }
 
-function getCustomerInfo(params, json_validated){
+function getCustomerInfo(params, json_validated) {
     if (json_validated) {
         let jsonCustomerInfo = JSON.parse(params.x_extra2);
         return jsonCustomerInfo;
