@@ -93,7 +93,7 @@ module.exports.confirmationPayment = async (req, res) => {
                 let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
                     id_order = order.id_order;
                 });
-                let orderDetailsInsert = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                //let orderDetailsInsert = await insertOrderDetailsPayment(pShoppingCart, id_order);
                 break;
             case 2:
                 message = "transacción rechazada";
@@ -229,7 +229,7 @@ function insertOrderDetailsPayment(data, id_order) {
             quantity: parseFloat(item['quantity']),
             value: valueItems,
             id_order: id_order,
-            id_item: item.id
+            id_item: item['id']
         };
         let OrdetDetIns = OrderDetails.create(order_detail);
     });
