@@ -28,7 +28,7 @@ module.exports.confirmationPayment = async (req, res) => {
     }
 
     if (valid_json_shopcart) {
-        let jsonShopCart = JSON.parse(x_extra3);
+        pShoppingCart = JSON.parse(x_extra3);
         pTotal = await getTotal(jsonShopCart);
     }
 
@@ -93,7 +93,7 @@ module.exports.confirmationPayment = async (req, res) => {
                 let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
                     id_order = order.id_order;
                 });
-                let orderDetailsInsert = await insertOrderDetailsPayment(jsonShopCart, id_order);
+                let orderDetailsInsert = await insertOrderDetailsPayment(pShoppingCart, id_order);
                 break;
             case 2:
                 message = "transacción rechazada";
