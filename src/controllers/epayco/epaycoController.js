@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { ConfirmationResponse, Order, Shipping } = require('../../database');
+const { ConfirmationResponse, Order, OrderDetails, Shipping } = require('../../database');
 const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
@@ -27,7 +27,7 @@ module.exports.confirmationPayment = async (req, res) => {
         pCustomerId = jsonCustomerInfo.customer_id;
     }
 
-    if(valid_json_shopcart){
+    if (valid_json_shopcart) {
         let jsonShopCart = JSON.parse(x_extra3);
         pTotal = await getTotal(jsonShopCart);
     }
@@ -35,7 +35,7 @@ module.exports.confirmationPayment = async (req, res) => {
     // Datos de la dirección de envío
     if (valid_json_dir) {
         let jsonDirInfo = JSON.parse(x_extra1);
-        
+
         pShiping = {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
@@ -78,7 +78,7 @@ module.exports.confirmationPayment = async (req, res) => {
 
     let responsX, message, shipping, vinsertInfoPayment = "";
 
-    let id_shipping = "";
+    let id_shipping, id_order = "";
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
         let x_cod_response = parseInt(params.x_cod_response);
@@ -90,7 +90,10 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
-                let order = insertOrderPayment(params,pTotal.total_products, pTotal.total_value,id_shipping,pCustomerId);
+                let orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    id_order = order.id_order;
+                });
+                let orderDetailsInsert = await insertOrderDetailsPayment(jsonShopCart, id_order);
                 break;
             case 2:
                 message = "transacción rechazada";
@@ -219,6 +222,19 @@ function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCus
     return Order.create(order);
 }
 
+function insertOrderDetailsPayment(data, id_order) {
+    data.forEach(item => {
+        let valueItems = parseFloat(item['price'])*parseFloat(item['quantity']);
+        let order_detail = {
+            quantity: parseFloat(item['quantity']),
+            value: valueItems,
+            id_order: id_order,
+            id_item: item.id
+        };
+        let OrdetDetIns = OrderDetails.create(order_detail);
+    });
+}
+
 function getCustomerInfo(params, json_validated) {
     if (json_validated) {
         let jsonCustomerInfo = JSON.parse(params.x_extra2);
@@ -291,5 +307,5 @@ module.exports.pruebaHash = async (req, res) => {
 
 module.exports.pruebajson = async (req, res) => {
     let object = {};
-    
+
 }
