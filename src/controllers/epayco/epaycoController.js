@@ -40,7 +40,7 @@ module.exports.confirmationPayment = async (req, res) => {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
             // extra_address: pCustomerId,
-            extra_address: `tv:${pTotal.total_value} tp:${pTotal.total_products}`,
+            extra_address: params,
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
