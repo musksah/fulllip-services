@@ -21,6 +21,6 @@ router.put('/:id', userController.updatePassword);
 
 router.put('/password/:id', userController.updatePasswordEmail);
 
-router.post('/usuario', userController.findOne);
+router.post('/user', userController.findOne);
 
 module.exports = router;
