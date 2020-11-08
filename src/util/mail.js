@@ -93,12 +93,12 @@ class Mail {
     sendTest() {
         fs.readFile(__dirname + '/email/emailconfirmation.html', (err, template) => {
             if (err) throw err;
-            // console.log('template: ' + template);
+            console.log('template: ' + template);
             let mailOptions = {
                 from: smtp.user,
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Correo de prueba',
-                html: ''
+                html: template
             }
             this.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
