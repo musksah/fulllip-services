@@ -40,7 +40,7 @@ module.exports.confirmationPayment = async (req, res) => {
             address: jsonDirInfo.address,
             // extra_address: jsonDirInfo.adicional,
             // extra_address: pCustomerId,
-            extra_address: params,
+            extra_address: JSON.stringify(params),
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -90,7 +90,7 @@ module.exports.confirmationPayment = async (req, res) => {
                 let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
                     id_shipping = confirmation_response.id_confirmation_response;
                 });
-                let order = await insertOrderPayment(params,pTotal.total_products, pTotal.total_value,id_shipping,pCustomerId);
+                let order = insertOrderPayment(params,pTotal.total_products, pTotal.total_value,id_shipping,pCustomerId);
                 break;
             case 2:
                 message = "transacción rechazada";
