@@ -20,6 +20,15 @@ module.exports.sendMailChange = async (req, res) => {
         let response_update = await updateEmail(req);
         res.json({ message: response_update });
     }
+}
 
-
+module.exports.sendTest = async (req, res) => {
+    let params = req.body;
+    const mailManager = new MailManager();
+    let response = await mailManager.sendTest();
+    if (response) {
+        res.status(200).json({ message: response });
+    } else {
+        res.json({ message: response });
+    }
 }

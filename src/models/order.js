@@ -8,6 +8,8 @@ module.exports = (sequelize, type) => {
         order_code: type.STRING,
         total_products: type.INTEGER,
         total_value: type.INTEGER,
+        status_code: type.STRING,
+        status: type.STRING,
         id_shipping: {
             type: type.BIGINT,
             references: {

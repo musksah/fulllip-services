@@ -16,10 +16,11 @@ module.exports = {
     },
     keytoken: process.env.KEYTOKEN || 'FULLIPTOKEN2020',
     keysession: process.env.KEYSESSION || 'FULLIPTOKEN2020',
+    hostapi:'https://sebastian-hr.com/api',
     smtp:{
         host:'smtp.flockmail.com',
         port: '587',
-        user:'admin@sebastian-hr.com',
-        password: 'D4nt3d3inf3rn0'
+        user:'info@fullipscolombia.com',
+        password: 'Lalitos321'
     }
 };

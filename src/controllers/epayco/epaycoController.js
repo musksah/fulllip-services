@@ -1,12 +1,13 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { ConfirmationResponse, Order, Shipping } = require('../../database');
+const { ConfirmationResponse, Order, OrderDetails, Shipping } = require('../../database');
 const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
     let currentTimestamp = moment().unix();
     let x_signature = params.x_signature;
+    let xCurrencyCode = params.x_currency_code;
     //Información de envío
     let x_extra1 = params.x_extra1;
     let valid_json_dir = await IsValidJSONString(x_extra1);
@@ -23,24 +24,25 @@ module.exports.confirmationPayment = async (req, res) => {
     let pTotal = {};
 
     if (valid_json_cust) {
+        console.log("Json válido customer");
         let jsonCustomerInfo = JSON.parse(x_extra2);
         pCustomerId = jsonCustomerInfo.customer_id;
     }
 
-    if(valid_json_shopcart){
-        let jsonShopCart = JSON.parse(x_extra3);
-        pTotal = await getTotal(jsonShopCart);
+    if (valid_json_shopcart) {
+        console.log("Json válido shopping cart");
+        pShoppingCart = JSON.parse(x_extra3);
+        pTotal = await getTotal(pShoppingCart);
     }
 
     // Datos de la dirección de envío
     if (valid_json_dir) {
+        console.log("Json válido dirección");
         let jsonDirInfo = JSON.parse(x_extra1);
-        
         pShiping = {
             address: jsonDirInfo.address,
-            // extra_address: jsonDirInfo.adicional,
-            // extra_address: pCustomerId,
-            extra_address: JSON.stringify(params),
+            extra_address: jsonDirInfo.adicional,
+            // extra_address: JSON.stringify(params),
             name: jsonDirInfo.name,
             lastname: jsonDirInfo.lastname,
             dni_id: jsonDirInfo.dni_id,
@@ -63,58 +65,71 @@ module.exports.confirmationPayment = async (req, res) => {
         };
     }
 
-    // Datos de los productos
-    // if(valid_json_shopcart){
-    //     let jsonShopCart = JSON.parse(x_extra3);
-    //     getTotal(jsonShopCart);
-    //     pShoppingCart = {
-
-    //     };
-    // }else{
-
-    // }
-
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
-
-    let id_shipping = "";
+    let shippingInsert, orderInsert = "";
+    let id_shipping, id_shopping, orderDetIns = "";
+    
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
         let x_cod_response = parseInt(params.x_cod_response);
         switch (x_cod_response) {
             case 1:
                 message = "transacción aceptada";
-                pShiping.lastname = "Aceptado";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                let shipping = await Shipping.create(pShiping).then(function (confirmation_response) {
-                    id_shipping = confirmation_response.id_confirmation_response;
+                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                    id_shipping = shipping.id_shipping;
                 });
-                let order = insertOrderPayment(params,pTotal.total_products, pTotal.total_value,id_shipping,pCustomerId);
+                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    id_order = order.id_order
+                });
+                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                console.log(id_shipping);
+                console.log("id_shopping: " + id_order);
                 break;
             case 2:
-                message = "transacción rechazada";
+                message = "transacción aceptada";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                pShiping.lastname = "Rechazada";
-                shipping = await Shipping.create(pShiping);
+                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                    id_shipping = shipping.id_shipping;
+                });
+                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    id_order = order.id_order
+                });
+                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                console.log(id_shipping);
+                console.log("id_shopping: " + id_order);
                 break;
             case 3:
-                message = "transacción pendiente";
+                message = "transacción aceptada";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                pShiping.lastname = "Pendiente";
-                shipping = await Shipping.create(pShiping);
+                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                    id_shipping = shipping.id_shipping;
+                });
+                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    id_order = order.id_order
+                });
+                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                console.log(id_shipping);
+                console.log("id_shopping: " + id_order);
                 break;
             case 4:
-                message = "transacción fallida";
+                message = "transacción aceptada";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                pShiping.lastname = "Fallida";
-                shipping = await Shipping.create(pShiping);
+                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                    id_shipping = shipping.id_shipping;
+                });
+                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    id_order = order.id_order
+                });
+                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                console.log(id_shipping);
+                console.log("id_shopping: " + id_order);
                 break;
             default:
                 message = "Opción no valida";
                 vinsertInfoPayment = await insertInfoPayment(params);
-                pShiping.lastname = "No valida";
-                shippingn = await Shipping.create(pShiping);
                 break;
         }
     } else {
@@ -209,14 +224,30 @@ function insertInfoPayment(params) {
 
 function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer) {
     let x_invoice = params.x_id_invoice;
+    let x_response = params.x_response;
+    let x_cod_response = params.x_cod_response;
     let order = {
         order_code: x_invoice,
         total_products: totalProducts,
         total_value: totalValue,
+        status: x_response,
+        status_code: x_cod_response,
         id_shipping: idShipping,
         id_customer: idCustomer,
     };
     return Order.create(order);
+}
+
+function insertOrderDetailsPayment(dShoppingCart, id_order) {
+    dShoppingCart.forEach(item => {
+        let orderDetails = {
+            quantity: parseFloat(item['quantity']),
+            value: parseFloat(item['price']) * parseFloat(item['quantity']),
+            id_order: id_order,
+            id_item: item['id']
+        };
+        let orderDetailsIns = OrderDetails.create(orderDetails);
+    });
 }
 
 function getCustomerInfo(params, json_validated) {
@@ -291,5 +322,5 @@ module.exports.pruebaHash = async (req, res) => {
 
 module.exports.pruebajson = async (req, res) => {
     let object = {};
-    
+
 }

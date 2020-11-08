@@ -1,5 +1,6 @@
 
 var nodemailer = require('nodemailer');
+var keys = require('../keys');
 const jwt = require('jsonwebtoken');
 const { smtp } = require('../keys');
 const fs = require('fs');
@@ -37,7 +38,7 @@ class Mail {
                 html: `
                 <h1>Hola ${decoded.name}</h1>
                 <p>Confirma tu correo electrónico:</p>
-                <a href="http://${host}/confirmation-email/${token}">http://${host}/confirmation-email/confirmation</a>`,
+                <a href="${keys.hostapi}/confirmation-email/${token}">${keys.hostapi}/confirmation-email/confirmation</a>`,
             }
             this.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
@@ -89,6 +90,42 @@ class Mail {
         }));
     }
 
+    sendTest() {
+        fs.readFile(__dirname + '/email/emailconfirmation.html', (err, template) => {
+            if (err) throw err;
+            // console.log('template: ' + template);
+            let mailOptions = {
+                from: smtp.user,
+                to: 'xsebastianhrodriguezx@gmail.com',
+                subject: 'Correo de prueba',
+                html: ''
+            }
+            this.transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return `${error.message}`;
+                } else {
+                    return "Confirmación enviada";
+                }
+            });
+            // var mailOptions = {
+            //     from: smtp.user,
+            //     to: `${decoded.email}`,
+            //     subject: "Confirma tu correo electrónico",
+            //     html: `
+            //     <h1>Hola ${decoded.name}</h1>
+            //     <p>Confirma tu correo electrónico:</p>
+            //     <a href="${keys.hostapi}/confirmation-email/${token}">${keys.hostapi}/confirmation-email/confirmation</a>`,
+            // }
+            // this.transporter.sendMail(mailOptions, (error, info) => {
+            //     if (error) {
+            //         return `${error.message}`;
+            //     } else {
+            //         return "Confirmación enviada";
+            //     }
+            // });
+        });
+    }
+
     sendChangePassword(token) {
         const decoded = jwt.decode(token);
         const host = process.env.DB_HOST || 'fullipscolombia.com';
@@ -100,7 +137,7 @@ class Mail {
             html: `
                 <h1>Hola ${decoded.name} ${decoded.lastname}</h1>
                 <p>Para restablecer tu contraseña debes acceder al siguiente enlace.</p>
-                <a href="http://${host}/change-Password/${token}">http://${host}/change-Password</a>`,
+                <a href="${keys.hostapi}/change-Password/${token}">${keys.hostapi}/change-Password</a>`,
         }
         this.transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
