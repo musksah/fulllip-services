@@ -15,6 +15,8 @@ router.get('/confirmation-email/:token', userController.confirmationEmail);
 
 router.get('/', userController.session);
 
+router.get('/email', userController.emails);
+
 router.post('/logout', userController.logOut)
 
 router.put('/:id', userController.updatePassword);

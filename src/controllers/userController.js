@@ -176,3 +176,9 @@ module.exports.confirmationEmail = async (req, res) => {
         }
     });
 }
+
+module.exports.emails = async (req, res) => {
+    const users = await User.findAll({ where: { id_rol: 1 } });
+    console.log(users);
+    res.json(users);
+}

@@ -5,5 +5,6 @@ module.exports.findAll = async (req, res) => {
     OrderDetails.belongsTo(Item, { foreignKey: 'id_item' });
     Order.hasMany(OrderDetails, { foreignKey: 'id_order' });
     const order = await Order.findAll({ include: [{ model: Shipping }, { model: OrderDetails, include: [Item] }] });
+    console.log(order);
     res.json(order);
 }
