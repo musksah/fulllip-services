@@ -51,23 +51,34 @@ class Mail {
     }
 
     sendMailContact(params) {
-        var mailOptions = {
-            from: smtp.user,
-            to: `xsebastianhrodriguezx@gmail.com`,
-            subject: "Mensaje de Contacto desde Fullips Colombia",
-            html: `
-            <h1>Este correo fue generado desde el sitio web de fullips colombia</h1>
-            <p>Asunto: ${params.subject}</p>
-            <p>Nombre: ${params.name} ${params.lastname}</p>
-            <p>Mensaje: ${params.message} </p>
-            `
-        }
-        this.transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return `${error.message}`;
-            } else {
-                return "Confirmación enviada";
+        let nombre = params.name;
+        let lastname = params.lastname;
+        let email = params.email;
+        let subject = params.subject;
+        let message = params.message;
+
+        fs.readFile(__dirname + '/email/contact.html', (err, template) => {
+            if (err) throw err;
+            let strTemplate = template.toString();
+            strTemplate = strTemplate.replace("VNOMBRES",nombre);
+            strTemplate = strTemplate.replace("VAPEELIDOS",lastname);
+            strTemplate = strTemplate.replace("VASUNTO",subject);
+            strTemplate = strTemplate.replace("VCORREO",email);
+            strTemplate = strTemplate.replace("VMENSAJE",message);
+            console.log('template:  ' + strTemplate);
+            let mailOptions = {
+                from: smtp.user,
+                to: 'xsebastianhrodriguezx@gmail.com',
+                subject: 'Correo Formulario de Contacto',
+                html: strTemplate
             }
+            this.transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return `${error.message}`;
+                } else {
+                    return "Confirmación enviada";
+                }
+            });
         });
     }
 
@@ -110,22 +121,6 @@ class Mail {
                     return "Confirmación enviada";
                 }
             });
-            // var mailOptions = {
-            //     from: smtp.user,
-            //     to: `${decoded.email}`,
-            //     subject: "Confirma tu correo electrónico",
-            //     html: `
-            //     <h1>Hola ${decoded.name}</h1>
-            //     <p>Confirma tu correo electrónico:</p>
-            //     <a href="${keys.hostapi}/confirmation-email/${token}">${keys.hostapi}/confirmation-email/confirmation</a>`,
-            // }
-            // this.transporter.sendMail(mailOptions, (error, info) => {
-            //     if (error) {
-            //         return `${error.message}`;
-            //     } else {
-            //         return "Confirmación enviada";
-            //     }
-            // });
         });
     }
 
