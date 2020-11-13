@@ -90,15 +90,18 @@ class Mail {
         }));
     }
 
-    sendTest() {
-        fs.readFile(__dirname + '/email/emailconfirmation.html', (err, template) => {
+    sendTest(url, nombre) {
+        fs.readFile(__dirname + '/email/changepassword.html', (err, template) => {
             if (err) throw err;
-            console.log('template: ' + template);
+            let strTemplate = template.toString();
+            strTemplate = strTemplate.replace("$[NOMBRE]",nombre);
+            strTemplate = strTemplate.replace(/URLCONFIRMATION/g,url);
+            console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from: smtp.user,
                 to: 'xsebastianhrodriguezx@gmail.com',
-                subject: 'Correo de prueba',
-                html: template
+                subject: 'Confirmar Correo Electrónico',
+                html: strTemplate
             }
             this.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {

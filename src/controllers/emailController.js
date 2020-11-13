@@ -25,7 +25,7 @@ module.exports.sendMailChange = async (req, res) => {
 module.exports.sendTest = async (req, res) => {
     let params = req.body;
     const mailManager = new MailManager();
-    let response = await mailManager.sendTest();
+    let response = await mailManager.sendTest("https://fullipscolombia.com/","Camila");
     if (response) {
         res.status(200).json({ message: response });
     } else {
