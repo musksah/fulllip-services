@@ -17,6 +17,9 @@ module.exports = {
     keytoken: process.env.KEYTOKEN || 'FULLIPTOKEN2020',
     keysession: process.env.KEYSESSION || 'FULLIPTOKEN2020',
     hostapi:'https://sebastian-hr.com/api',
+    // hostapi:'localhost:8005',
+    hostweb:'https://fullipscolombia.com',
+    // hostweb:'127.0.0.1:3000',
     smtp:{
         host:'smtp.flockmail.com',
         port: '587',

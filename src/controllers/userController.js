@@ -42,9 +42,18 @@ module.exports.register = (req, res) => {
         } else {
             req.body.password = data;
             try {
+                const mailManager = new MailManager();
+                let responseWel = true;
+                const sendWelcome = await mailManager.sendWelcome(req.body.email).then( welcome =>{
+                    responseWel = true;
+                }).catch( err =>{
+                    responseWel = false;
+                });
+                if(responseWel == false){
+                    res.status(201).json({ message: "Correo no válido" });
+                }
                 const user = await User.create({ email: req.body.email, password: req.body.password, id_rol: rol });
                 if (user) {
-                    const mailManager = new MailManager();
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
                     const { name } = customer;

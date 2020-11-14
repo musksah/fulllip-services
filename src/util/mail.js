@@ -4,6 +4,8 @@ var keys = require('../keys');
 const jwt = require('jsonwebtoken');
 const { smtp } = require('../keys');
 const fs = require('fs');
+const ejs = require('ejs');
+const path = require("path");
 
 class Mail {
 
@@ -24,21 +26,17 @@ class Mail {
 
     sendEmailConfirmation(token) {
         const decoded = jwt.decode(token);
-        const host = process.env.DB_HOST || 'fullipscolombia.com';
-
-        let html_template = '';
-        fs.readFile(__dirname + '/email/contact.html', (err, data) => {
-            if (err) throw err;
-            console.log('template: ' + data);
-
-            var mailOptions = {
+        let url = `${keys.hostweb}/confirmation-email/${token}`;
+        ejs.renderFile(path.join(__dirname, '/email/emailconfirmation.ejs'), {
+            user_firstname: decoded.name,
+            confirm_link: url
+        }).then(result => {
+            let emailTemplate = result;
+            let mailOptions = {
                 from: smtp.user,
                 to: `${decoded.email}`,
-                subject: "Confirma tu correo electrónico",
-                html: `
-                <h1>Hola ${decoded.name}</h1>
-                <p>Confirma tu correo electrónico:</p>
-                <a href="${keys.hostapi}/confirmation-email/${token}">${keys.hostapi}/confirmation-email/confirmation</a>`,
+                subject: 'Confirma tu correo electrónico',
+                html: emailTemplate
             }
             this.transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
@@ -47,7 +45,28 @@ class Mail {
                     return "Confirmación enviada";
                 }
             });
+        }).catch(err => {
+            console.log("Error: "+err);
+            return `${err}`
         });
+    }
+
+    sendWelcome = async (email) => {
+        let emailTemplate = '';
+        let readtemplate = await ejs.renderFile(path.join(__dirname, '/email/welcome.ejs'), {}).then(result => {
+            console.log('proabdo');
+            emailTemplate = result;
+        }).catch(err => {
+            console.log("Error: "+err);
+            return false;
+        });
+        let mailOptions = {
+            from: smtp.user,
+            to: email,
+            subject: 'Te damos la bienvenido a Fullips Colombia',
+            html: emailTemplate
+        }
+        return this.transporter.sendMail(mailOptions);
     }
 
     sendMailContact(params) {
@@ -60,24 +79,23 @@ class Mail {
         fs.readFile(__dirname + '/email/contact.html', (err, template) => {
             if (err) throw err;
             let strTemplate = template.toString();
-            strTemplate = strTemplate.replace("VNOMBRES",nombre);
-            strTemplate = strTemplate.replace("VAPEELIDOS",lastname);
-            strTemplate = strTemplate.replace("VASUNTO",subject);
-            strTemplate = strTemplate.replace("VCORREO",email);
-            strTemplate = strTemplate.replace("VMENSAJE",message);
+            strTemplate = strTemplate.replace("VNOMBRES", nombre);
+            strTemplate = strTemplate.replace("VAPEELIDOS", lastname);
+            strTemplate = strTemplate.replace("VASUNTO", subject);
+            strTemplate = strTemplate.replace("VCORREO", email);
+            strTemplate = strTemplate.replace("VMENSAJE", message);
+            console.log('template:  ' + strTemplate);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from: smtp.user,
                 to: 'xsebastianhrodriguezx@gmail.com',
-                subject: 'Correo Formulario de Contacto',
+                subject: 'Confirmar Correo Electrónico',
                 html: strTemplate
             }
-            this.transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return `${error.message}`;
-                } else {
-                    return "Confirmación enviada";
-                }
+            this.transporter.sendMail(mailOptions).then(() => {
+                return true;
+            }).catch(() => {
+                return false;
             });
         });
     }
@@ -105,8 +123,8 @@ class Mail {
         fs.readFile(__dirname + '/email/changepassword.html', (err, template) => {
             if (err) throw err;
             let strTemplate = template.toString();
-            strTemplate = strTemplate.replace("$[NOMBRE]",nombre);
-            strTemplate = strTemplate.replace(/URLCONFIRMATION/g,url);
+            strTemplate = strTemplate.replace("$[NOMBRE]", nombre);
+            strTemplate = strTemplate.replace(/URLCONFIRMATION/g, url);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from: smtp.user,
