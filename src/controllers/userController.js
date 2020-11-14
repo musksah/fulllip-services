@@ -46,13 +46,18 @@ module.exports.register = (req, res) => {
                 let responseWel = true;
                 const sendWelcome = await mailManager.sendWelcome(req.body.email).then(welcome => {
                     responseWel = true;
+                    console.log('validación');
+                    console.log(welcome);
                 }).catch(err => {
                     responseWel = false;
+                    console.log('validación err');
                 });
                 if (responseWel == false) {
+                    console.log('validación 2');
                     res.status(201).json({ message: "Correo no válido" });
                 }
                 const user = await User.create({ email: req.body.email, password: req.body.password, id_rol: rol });
+                console.log('user');
                 if (user) {
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
@@ -166,10 +171,13 @@ module.exports.findOne = async (req, res) => {
         console.log(lastname);
         const token = jwt.sign({ id_user, name, lastname, email }, keytoken, { expiresIn: '1h' });
         console.log(token);
-        mailManager.sendChangePassword(token);
-        res.json({ message: "El correo fue enviado correctamente" });
+        let sendChange = await mailManager.sendChangePassword(token).then(data =>{
+            res.status(200).json({ message: "El correo fue enviado correctamente" });
+        }).catch(err =>{
+            res.status(201).json({ message: "El correo no pudo ser enviado por favor comunícate con nosotros para ayudarte" });
+        });
     } else {
-        res.status(201).send({ message: "Correo Inválido" });
+        res.status(201).send({ message: "Correo no válido" });
     }
 };
 

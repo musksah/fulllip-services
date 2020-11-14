@@ -24,31 +24,26 @@ class Mail {
         });
     }
 
-    sendEmailConfirmation(token) {
+    sendEmailConfirmation = async (token) => {
         const decoded = jwt.decode(token);
         let url = `${keys.hostweb}/confirmation-email/${token}`;
-        ejs.renderFile(path.join(__dirname, '/email/emailconfirmation.ejs'), {
+        let emailTemplate = '';
+        let rendertemplate = await ejs.renderFile(path.join(__dirname, '/email/emailconfirmation.ejs'), {
             user_firstname: decoded.name,
             confirm_link: url
         }).then(result => {
-            let emailTemplate = result;
-            let mailOptions = {
-                from: smtp.user,
-                to: `${decoded.email}`,
-                subject: 'Confirma tu correo electrónico',
-                html: emailTemplate
-            }
-            this.transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return `${error.message}`;
-                } else {
-                    return "Confirmación enviada";
-                }
-            });
+            emailTemplate = result;
         }).catch(err => {
             console.log("Error: "+err);
             return `${err}`
         });
+        let mailOptions = {
+            from:`Fullips Colombia <${smtp.user}>`,
+            to: `${decoded.email}`,
+            subject: 'Confirma tu correo electrónico',
+            html: emailTemplate
+        }
+        return this.transporter.sendMail(mailOptions);
     }
 
     sendWelcome = async (email) => {
@@ -61,7 +56,7 @@ class Mail {
             return false;
         });
         let mailOptions = {
-            from: smtp.user,
+            from:`Fullips Colombia <${smtp.user}>`,
             to: email,
             subject: 'Te damos la bienvenido a Fullips Colombia',
             html: emailTemplate
@@ -87,7 +82,7 @@ class Mail {
             console.log('template:  ' + strTemplate);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
-                from: smtp.user,
+                from:`Fullips Colombia <${smtp.user}>`,
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Confirmar Correo Electrónico',
                 html: strTemplate
@@ -127,7 +122,7 @@ class Mail {
             strTemplate = strTemplate.replace(/URLCONFIRMATION/g, url);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
-                from: smtp.user,
+                from:`Fullips Colombia <${smtp.user}>`,
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Confirmar Correo Electrónico',
                 html: strTemplate
@@ -142,26 +137,41 @@ class Mail {
         });
     }
 
-    sendChangePassword(token) {
+    sendChangePassword = async(token)=> {
         const decoded = jwt.decode(token);
-        const host = process.env.DB_HOST || 'fullipscolombia.com';
-
-        var mailOptions = {
-            from: smtp.user,
-            to: `${decoded.email}`,
-            subject: "Completa tu solicitud de restablecimiento de contraseña",
-            html: `
-                <h1>Hola ${decoded.name} ${decoded.lastname}</h1>
-                <p>Para restablecer tu contraseña debes acceder al siguiente enlace.</p>
-                <a href="${keys.hostapi}/change-Password/${token}">${keys.hostapi}/change-Password</a>`,
-        }
-        this.transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return `${error.message}`;
-            } else {
-                return "Confirmación enviada";
-            }
+        let url = `${keys.hostweb}/change-Password/${token}`;
+        let emailTemplate = '';
+        let rendertemplate = await ejs.renderFile(path.join(__dirname, '/email/change_password.ejs'), {
+            change_link: url
+        }).then(result => {
+            emailTemplate = result;
+        }).catch(err => {
+            console.log("Error: "+err);
+            return `${err}`
         });
+        let mailOptions = {
+            from:`Fullips Colombia <${smtp.user}>`,
+            to: `${decoded.email}`,
+            subject: 'Cambio de contraseña',
+            html: emailTemplate
+        }
+        return this.transporter.sendMail(mailOptions);
+        // var mailOptions = {
+        //     from: smtp.user,
+        //     to: `${decoded.email}`,
+        //     subject: "Completa tu solicitud de restablecimiento de contraseña",
+        //     html: `
+        //         <h1>Hola ${decoded.name} ${decoded.lastname}</h1>
+        //         <p>Para restablecer tu contraseña debes acceder al siguiente enlace.</p>
+        //         <a href="${keys.hostapi}/change-Password/${token}">${keys.hostapi}/change-Password</a>`,
+        // }
+        // this.transporter.sendMail(mailOptions, (error, info) => {
+        //     if (error) {
+        //         return `${error.message}`;
+        //     } else {
+        //         return "Confirmación enviada";
+        //     }
+        // });
     }
 
 }

@@ -22,6 +22,18 @@ module.exports.sendMailChange = async (req, res) => {
     }
 }
 
+module.exports.sendEmailConfirmation = async (req, res) => {
+    let params = req.params;
+    let token = params.token;
+    res.status(200).json({ message: token });
+    const mailManager = new MailManager();
+    let response = await mailManager.sendEmailConfirmation(token).then(data =>{
+        res.status(200).json({ message: "Hemos envíado el correo de confirmación a tu correo" });
+    }).catch(err =>{
+        res.status(201).json({ message: "El correo no pudo ser enviado por favor comunícate con nosotros para ayudarte" });
+    });
+}
+
 module.exports.sendTest = async (req, res) => {
     let params = req.body;
     const mailManager = new MailManager();
