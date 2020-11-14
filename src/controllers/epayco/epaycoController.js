@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { ConfirmationResponse, Order, OrderDetails, Shipping } = require('../../database');
+const { ConfirmationResponse, Order, OrderDetails, Shipping, Item } = require('../../database');
 const moment = require('moment');
 
 module.exports.confirmationPayment = async (req, res) => {
@@ -68,68 +68,46 @@ module.exports.confirmationPayment = async (req, res) => {
     let hash_signature = await hashPayment(params);
 
     let responsX, message, shipping, vinsertInfoPayment = "";
-    let shippingInsert, orderInsert = "";
+    let shippingInsert, order, orderInsert = "";
     let id_shipping, id_shopping, orderDetIns = "";
-    
+
     if (hash_signature == x_signature) {
         responsX = "Firma verificada";
         let x_cod_response = parseInt(params.x_cod_response);
         switch (x_cod_response) {
             case 1:
-                message = "transacción aceptada";
-                vinsertInfoPayment = await insertInfoPayment(params);
-                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
-                    id_shipping = shipping.id_shipping;
-                });
-                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
-                    id_order = order.id_order
-                });
-                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
-                console.log(id_shipping);
-                console.log("id_shopping: " + id_order);
-                break;
-            case 2:
-                message = "transacción aceptada";
-                vinsertInfoPayment = await insertInfoPayment(params);
-                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
-                    id_shipping = shipping.id_shipping;
-                });
-                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
-                    id_order = order.id_order
-                });
-                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
-                console.log(id_shipping);
-                console.log("id_shopping: " + id_order);
-                break;
-            case 3:
-                message = "transacción aceptada";
-                vinsertInfoPayment = await insertInfoPayment(params);
-                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
-                    id_shipping = shipping.id_shipping;
-                });
-                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
-                    id_order = order.id_order
-                });
-                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
-                console.log(id_shipping);
-                console.log("id_shopping: " + id_order);
-                break;
-            case 4:
-                message = "transacción aceptada";
-                vinsertInfoPayment = await insertInfoPayment(params);
-                shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
-                    id_shipping = shipping.id_shipping;
-                });
-                orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
-                    id_order = order.id_order
-                });
-                orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
-                console.log(id_shipping);
-                console.log("id_shopping: " + id_order);
+                order = await validateInvoice(params);
+                if (order === null) {
+                    message = "transacción aceptada";
+                    vinsertInfoPayment = await insertInfoPayment(params);
+                    shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                        id_shipping = shipping.id_shipping;
+                    });
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                        id_order = order.id_order
+                    });
+                    orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                    console.log(id_shipping);
+                    console.log("id_shopping: " + id_order);
+                }
+                updateProduct(pShoppingCart);
+
                 break;
             default:
-                message = "Opción no valida";
-                vinsertInfoPayment = await insertInfoPayment(params);
+                order = await validateInvoice(params);
+                if (order === null) {
+                    message = "transacción aceptada";
+                    vinsertInfoPayment = await insertInfoPayment(params);
+                    shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
+                        id_shipping = shipping.id_shipping;
+                    });
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                        id_order = order.id_order
+                    });
+                    orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
+                    console.log(id_shipping);
+                    console.log("id_shopping: " + id_order);
+                }
                 break;
         }
     } else {
@@ -285,6 +263,31 @@ function getShippingInfo(params, json_validated) {
             phone: params.x_customer_phone,
             agreed_date: moment(currentTimestamp * 1000).format("YYYY-MM-DD HH:mm:ss")
         };
+    }
+}
+
+async function validateInvoice(params) {
+    let order = await Order.findOne({ where: { order_code: params.x_id_invoice } });
+    if (order) {
+        const [numberOfAffectedRows, affectedRows] = await Order.update({ status_code: params.x_cod_response, status: params.x_response }, {
+            where: { order_code: params.x_id_invoice },
+            returning: true
+        })
+    }
+    return order;
+}
+
+async function updateProduct(dShoppingCart) {
+    const items = await Item.findAll();
+    for (let i = 0; i < dShoppingCart.length; i++) {
+        for (let j = 0; j < items.length; j++) {
+            if (dShoppingCart[i].id === items[j].dataValues.id_item) {
+                const [numberOfAffectedRows, affectedRows] = await Item.update({ stock: parseInt(items[j].dataValues.stock) - parseInt(dShoppingCart[i].quantity) }, {
+                    where: { id_item: items[j].dataValues.id_item },
+                    returning: true
+                })
+            }
+        }
     }
 }
 
