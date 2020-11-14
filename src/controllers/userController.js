@@ -44,12 +44,12 @@ module.exports.register = (req, res) => {
             try {
                 const mailManager = new MailManager();
                 let responseWel = true;
-                const sendWelcome = await mailManager.sendWelcome(req.body.email).then( welcome =>{
+                const sendWelcome = await mailManager.sendWelcome(req.body.email).then(welcome => {
                     responseWel = true;
-                }).catch( err =>{
+                }).catch(err => {
                     responseWel = false;
                 });
-                if(responseWel == false){
+                if (responseWel == false) {
                     res.status(201).json({ message: "Correo no válido" });
                 }
                 const user = await User.create({ email: req.body.email, password: req.body.password, id_rol: rol });
@@ -155,7 +155,7 @@ module.exports.updateEmail = async (req) => {
 
 module.exports.findOne = async (req, res) => {
     const mailManager = new MailManager();
-    User.hasOne(Customer, { foreignKey: 'id_user' });
+    User.belongsTo(Customer, { foreignKey: 'id_user' });
     const user = await User.findOne({ where: { email: req.body.email }, include: [Customer] });
     if (user) {
         const { id_user, email } = user;

@@ -12,6 +12,10 @@ module.exports.findAll = async (req, res) => {
                 'lastname',
                 'address',
                 'extra_address',
+                'dni_id',
+                'country',
+                'city',
+                'phone',
                 [Sequelize.fn('date_format', Sequelize.col('agreed_date'), '%Y-%m-%d %h:%i:%s'), 'agreed_date']
             ]
         }, { model: OrderDetails, include: [Item] }], order: [['id_order', 'DESC']]
