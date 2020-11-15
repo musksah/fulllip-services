@@ -83,7 +83,7 @@ class Mail {
             console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from:`Fullips Colombia <${smtp.user}>`,
-                to: 'xsebastianhrodriguezx@gmail.com',
+                to: 'fullipscolombia@gmail.com',
                 subject: 'Confirmar Correo Electrónico',
                 html: strTemplate
             }
