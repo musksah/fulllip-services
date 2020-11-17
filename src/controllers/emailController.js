@@ -7,7 +7,7 @@ module.exports.sendMailContact = async (req, res) => {
     let params = req.body;
     const mailManager = new MailManager();
     let response = await mailManager.sendMailContact(params);
-    res.json({ 'response': 'Email enviado correctamente ' });
+    res.json({ 'message': 'Hemos recibido tu mensaje, nos estaremos contactando contigo para ayudarte.' });
 }
 
 module.exports.sendMailChange = async (req, res) => {
