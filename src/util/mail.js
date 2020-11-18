@@ -39,6 +39,7 @@ class Mail {
         });
         let mailOptions = {
             from:`Fullips Colombia <${smtp.user}>`,
+            // to: `test-svahv9zuu@srv1.mail-tester.com`,
             to: `${decoded.email}`,
             subject: 'Confirma tu correo electrónico',
             html: emailTemplate
@@ -58,6 +59,7 @@ class Mail {
         let mailOptions = {
             from:`Fullips Colombia <${smtp.user}>`,
             to: email,
+            // to: `test-svahv9zuu@srv1.mail-tester.com`,
             subject: 'Te damos la bienvenido a Fullips Colombia',
             html: emailTemplate
         }
@@ -83,13 +85,35 @@ class Mail {
             console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from:`Fullips Colombia <${smtp.user}>`,
-                to: 'fullipscolombia@gmail.com',
-                subject: 'Confirmar Correo Electrónico',
+                // to: 'fullipscolombia@gmail.com',
+                to: 'xsebastianhrodriguezx@gmail.com',
+                subject: 'Mensaje desde la Web Fullips Colombia',
                 html: strTemplate
             }
             this.transporter.sendMail(mailOptions).then(() => {
                 return true;
             }).catch(() => {
+                return false;
+            });
+        });
+    }
+
+    sendMailSale() {
+        fs.readFile(__dirname + '/email/saleconfirmed.html', (err, template) => {
+            if (err) throw err;
+            let mailOptions = {
+                from:`Fullips Colombia <${smtp.user}>`,
+                // to: 'fullipscolombia@gmail.com',
+                to: 'xsebastianhrodriguezx@gmail.com',
+                subject: 'Venta confirmada',
+                html: strTemplate
+            }
+            this.transporter.sendMail(mailOptions).then((data) => {
+                console.log("Enviando correo de ventas");
+                console.log(data);
+                return true;
+            }).catch(() => {
+                console.log("Enviando correo de ventas, error");
                 return false;
             });
         });

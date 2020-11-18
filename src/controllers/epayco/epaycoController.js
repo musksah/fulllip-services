@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const { ConfirmationResponse, Order, OrderDetails, Shipping, Item } = require('../../database');
 const moment = require('moment');
+const { MailManager } = require('../../util/mail');
 
 module.exports.confirmationPayment = async (req, res) => {
     const params = req.body;
@@ -91,7 +92,8 @@ module.exports.confirmationPayment = async (req, res) => {
                     console.log("id_shopping: " + id_order);
                 }
                 updateProduct(pShoppingCart);
-
+                const mailManager = new MailManager();
+                mailManager.sendMailSale();
                 break;
             default:
                 order = await validateInvoice(params);
