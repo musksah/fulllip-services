@@ -127,9 +127,22 @@
       padding: 2px 16px;
     }
 
+    .container-p {
+      margin-top: 1.5em;
+      margin-bottom: 2em;
+      font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
     @media only screen and (max-width: 600px) {
       .card {
-        width: 80%;
+        width: 90%;
+      }
+
+      .card-body {
+        margin-left: 1.5em;
+        margin-right: 1.5em;
       }
     }
 
@@ -137,7 +150,7 @@
 
       /* For tablets: */
       .card {
-        width: 80%;
+        width: 85%;
       }
     }
   </style>
@@ -165,8 +178,7 @@
             </a>
           </center>
           <div class="card-body">
-            <div align="left" bgcolor="#ffffff"
-              style="margin-top: 1.5em;margin-bottom: 2em; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <div align="left" bgcolor="#ffffff" class="container-p">
               <p style="margin: 0;text-align:justify;">Hola <%= user_firstname %>, Bienvenid@ a la plataforma de ventas
                 de <a href="https://fullipscolombia.com/">Fullips Colombia</a>, agradecemos tu interés en nuestros
                 productos. Para confirmar tu correo debes presionar el botón que aparece debajo. Si no has creado una
@@ -177,12 +189,11 @@
                 style="background-color: #FF0D00; display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Confirmar
                 correo</a>
             </center>
-            <div
-              style=" margin-top: 2em;color:black; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <div class="container-p">
               <p style="text-align:justify;">Si eso no funciona, copia y pega el siguiente link en tu navegador de
                 internet:</p>
-              <p style="margin: 0; width: 100%;text-align: left;overflow-wrap: break-word;"><a href="<%= confirm_link %>"
-                  target="_blank"><%= confirm_link %></a>
+              <p style="margin: 0; width: 100%;text-align: left;overflow-wrap: break-word;"><a
+                  href="<%= confirm_link %>" target="_blank"><%= confirm_link %></a>
               </p>
             </div>
             <div
