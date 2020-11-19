@@ -23,3 +23,11 @@ module.exports.findAll = async (req, res) => {
     console.log(order);
     res.json(order);
 }
+
+module.exports.update = async (req, res) => {
+    const update = Order.update(req.body, {
+        where: { order_code: req.params.nOrder },
+        returning: true
+    });
+    res.json({ 'response': 'El producto fue actualizado con éxito' });
+}

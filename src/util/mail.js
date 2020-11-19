@@ -34,11 +34,11 @@ class Mail {
         }).then(result => {
             emailTemplate = result;
         }).catch(err => {
-            console.log("Error: "+err);
+            console.log("Error: " + err);
             return `${err}`
         });
         let mailOptions = {
-            from:`Fullips Colombia <${smtp.user}>`,
+            from: `Fullips Colombia <${smtp.user}>`,
             // to: `test-svahv9zuu@srv1.mail-tester.com`,
             to: `${decoded.email}`,
             subject: 'Confirma tu correo electrónico',
@@ -53,11 +53,11 @@ class Mail {
             console.log('proabdo');
             emailTemplate = result;
         }).catch(err => {
-            console.log("Error: "+err);
+            console.log("Error: " + err);
             return false;
         });
         let mailOptions = {
-            from:`Fullips Colombia <${smtp.user}>`,
+            from: `Fullips Colombia <${smtp.user}>`,
             to: email,
             // to: `test-svahv9zuu@srv1.mail-tester.com`,
             subject: 'Te damos la bienvenido a Fullips Colombia',
@@ -84,7 +84,7 @@ class Mail {
             console.log('template:  ' + strTemplate);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
-                from:`Fullips Colombia <${smtp.user}>`,
+                from: `Fullips Colombia <${smtp.user}>`,
                 // to: 'fullipscolombia@gmail.com',
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Mensaje desde la Web Fullips Colombia',
@@ -99,10 +99,24 @@ class Mail {
     }
 
     sendMailSale() {
+        let nombre = params.name;
+        let lastname = params.lastname;
+        let email = params.email;
+        let subject = params.subject;
+        let message = params.message;
+
         fs.readFile(__dirname + '/email/saleconfirmed.html', (err, template) => {
             if (err) throw err;
+            let strTemplate = template.toString();
+            strTemplate = strTemplate.replace("VNOMBRES", nombre);
+            strTemplate = strTemplate.replace("VAPEELIDOS", lastname);
+            strTemplate = strTemplate.replace("VASUNTO", subject);
+            strTemplate = strTemplate.replace("VCORREO", email);
+            strTemplate = strTemplate.replace("VMENSAJE", message);
+            console.log('template:  ' + strTemplate);
+            console.log('template:  ' + strTemplate);
             let mailOptions = {
-                from:`Fullips Colombia <${smtp.user}>`,
+                from: `Fullips Colombia <${smtp.user}>`,
                 // to: 'fullipscolombia@gmail.com',
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Venta confirmada',
@@ -146,7 +160,7 @@ class Mail {
             strTemplate = strTemplate.replace(/URLCONFIRMATION/g, url);
             console.log('template:  ' + strTemplate);
             let mailOptions = {
-                from:`Fullips Colombia <${smtp.user}>`,
+                from: `Fullips Colombia <${smtp.user}>`,
                 to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Confirmar Correo Electrónico',
                 html: strTemplate
@@ -161,7 +175,7 @@ class Mail {
         });
     }
 
-    sendChangePassword = async(token)=> {
+    sendChangePassword = async (token) => {
         const decoded = jwt.decode(token);
         let url = `${keys.hostweb}/change-Password/${token}`;
         let emailTemplate = '';
@@ -170,11 +184,11 @@ class Mail {
         }).then(result => {
             emailTemplate = result;
         }).catch(err => {
-            console.log("Error: "+err);
+            console.log("Error: " + err);
             return `${err}`
         });
         let mailOptions = {
-            from:`Fullips Colombia <${smtp.user}>`,
+            from: `Fullips Colombia <${smtp.user}>`,
             to: `${decoded.email}`,
             subject: 'Cambio de contraseña',
             html: emailTemplate

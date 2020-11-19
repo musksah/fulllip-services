@@ -23,6 +23,11 @@ module.exports = (sequelize, type) => {
                 model: 'customer',
                 key: 'id_customer'
             }
+        },
+        delivered: {
+            type: type.INTEGER,
+            defaultValue: 0,
+            allowNull: false
         }
     }, {
         tableName: 'order'
