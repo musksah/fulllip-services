@@ -5,7 +5,8 @@ module.exports = {
         database: process.env.DB_DATABASE || 'admin_fullips',
         host: process.env.DB_HOST || '45.90.108.19',
         port: process.env.DB_PORT || '3306',
-        dialect: process.env.DB_DIALECT || 'mysql'
+        dialect: process.env.DB_DIALECT || 'mysql',
+        timezone : "-05:00",
     },
     databaseSession: {
         user: process.env.DB_USER || 'admin_fullips',
