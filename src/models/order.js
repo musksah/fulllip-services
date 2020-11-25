@@ -28,7 +28,8 @@ module.exports = (sequelize, type) => {
             type: type.INTEGER,
             defaultValue: 0,
             allowNull: false
-        }
+        },
+        donation: type.INTEGER
     }, {
         tableName: 'order'
     });

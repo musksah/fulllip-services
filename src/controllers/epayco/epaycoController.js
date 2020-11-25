@@ -21,13 +21,14 @@ module.exports.confirmationPayment = async (req, res) => {
     let x_extra3 = params.x_extra3;
     let valid_json_shopcart = await IsValidJSONString(x_extra3);
 
-    let pShiping, pShoppingCart, pCustomerId = "";
+    let pShiping, pShoppingCart, pCustomerId = "", donation = 0;
     let pTotal = {};
 
     if (valid_json_cust) {
         console.log("Json válido customer");
         let jsonCustomerInfo = JSON.parse(x_extra2);
         pCustomerId = jsonCustomerInfo.customer_id;
+        donation = jsonCustomerInfo.donation;
     }
 
     if (valid_json_shopcart) {
@@ -84,7 +85,7 @@ module.exports.confirmationPayment = async (req, res) => {
                     shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
                         id_shipping = shipping.id_shipping;
                     });
-                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId,donation).then(function (order) {
                         id_order = order.id_order
                     });
                     orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
@@ -103,7 +104,7 @@ module.exports.confirmationPayment = async (req, res) => {
                     shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
                         id_shipping = shipping.id_shipping;
                     });
-                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId).then(function (order) {
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId,donation).then(function (order) {
                         id_order = order.id_order
                     });
                     orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
@@ -202,7 +203,7 @@ function insertInfoPayment(params) {
     return ConfirmationResponse.create(params);
 }
 
-function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer) {
+function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer,donation) {
     let x_invoice = params.x_id_invoice;
     let x_response = params.x_response;
     let x_cod_response = params.x_cod_response;
@@ -214,6 +215,7 @@ function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCus
         status_code: x_cod_response,
         id_shipping: idShipping,
         id_customer: idCustomer,
+        donation: donation,
     };
     return Order.create(order);
 }
