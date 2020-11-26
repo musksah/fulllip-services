@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { ConfirmationResponse, Order, OrderDetails, Shipping, Item } = require('../../database');
+const { ConfirmationResponse, Order, OrderDetails, Shipping, Item, Donation } = require('../../database');
 const moment = require('moment');
 const { MailManager } = require('../../util/mail');
 
@@ -85,7 +85,7 @@ module.exports.confirmationPayment = async (req, res) => {
                     shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
                         id_shipping = shipping.id_shipping;
                     });
-                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId,donation).then(function (order) {
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId, donation).then(function (order) {
                         id_order = order.id_order
                     });
                     orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
@@ -93,6 +93,7 @@ module.exports.confirmationPayment = async (req, res) => {
                     console.log("id_shopping: " + id_order);
                 }
                 updateProduct(pShoppingCart);
+                insertOrUpdateDonation(donation);
                 const mailManager = new MailManager();
                 mailManager.sendMailSale();
                 break;
@@ -104,7 +105,7 @@ module.exports.confirmationPayment = async (req, res) => {
                     shippingInsert = await Shipping.create(pShiping).then(function (shipping) {
                         id_shipping = shipping.id_shipping;
                     });
-                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId,donation).then(function (order) {
+                    orderInsert = await insertOrderPayment(params, pTotal.total_products, pTotal.total_value, id_shipping, pCustomerId, donation).then(function (order) {
                         id_order = order.id_order
                     });
                     orderDetIns = await insertOrderDetailsPayment(pShoppingCart, id_order);
@@ -203,7 +204,7 @@ function insertInfoPayment(params) {
     return ConfirmationResponse.create(params);
 }
 
-function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer,donation) {
+function insertOrderPayment(params, totalProducts, totalValue, idShipping, idCustomer, donation) {
     let x_invoice = params.x_id_invoice;
     let x_response = params.x_response;
     let x_cod_response = params.x_cod_response;
@@ -230,6 +231,18 @@ function insertOrderDetailsPayment(dShoppingCart, id_order) {
         };
         let orderDetailsIns = OrderDetails.create(orderDetails);
     });
+}
+
+async function insertOrUpdateDonation(d) {
+    let donation = await Donation.findOne({ where: { id_donation: 1 } });
+    if (donation) {
+        const [numberOfAffectedRows, affectedRows] = await Donation.update({ total: parseInt(donation.dataValues.total) + parseInt(d) }, {
+            where: { id_donation: 1 },
+            returning: true
+        })
+    } else {
+        let donation_total = Donation.create({ total: d });
+    }
 }
 
 function getCustomerInfo(params, json_validated) {
