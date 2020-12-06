@@ -18,6 +18,7 @@ drop table customer;
 drop table user;
 drop table rol;
 drop table confirmation_response;
+drop table donation;
 
 
 

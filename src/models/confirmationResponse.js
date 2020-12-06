@@ -216,52 +216,52 @@ module.exports = (sequelize, type) => {
             defaultValue: ''
         },
         x_extra1: {
-            type: type.STRING,
+            type: type.STRING(800),
             allowNull: false,
             defaultValue: ''
         },
         x_extra2: {
-            type: type.STRING,
+            type: type.STRING(800),
             allowNull: false,
             defaultValue: ''
         },
         x_extra3: {
-            type: type.STRING,
+            type: type.STRING(800),
             allowNull: false,
             defaultValue: ''
         },
         x_extra4: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra5: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra6: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra7: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra8: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra9: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra10: {
-            type: type.STRING,
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },

@@ -99,26 +99,13 @@ class Mail {
     }
 
     sendMailSale() {
-        let nombre = params.name;
-        let lastname = params.lastname;
-        let email = params.email;
-        let subject = params.subject;
-        let message = params.message;
-
         fs.readFile(__dirname + '/email/saleconfirmed.html', (err, template) => {
             if (err) throw err;
             let strTemplate = template.toString();
-            strTemplate = strTemplate.replace("VNOMBRES", nombre);
-            strTemplate = strTemplate.replace("VAPEELIDOS", lastname);
-            strTemplate = strTemplate.replace("VASUNTO", subject);
-            strTemplate = strTemplate.replace("VCORREO", email);
-            strTemplate = strTemplate.replace("VMENSAJE", message);
-            console.log('template:  ' + strTemplate);
-            console.log('template:  ' + strTemplate);
             let mailOptions = {
                 from: `Fullips Colombia <${smtp.user}>`,
-                // to: 'fullipscolombia@gmail.com',
-                to: 'xsebastianhrodriguezx@gmail.com',
+                to: 'fullipscolombia@gmail.com',
+                // to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Venta confirmada',
                 html: strTemplate
             }
