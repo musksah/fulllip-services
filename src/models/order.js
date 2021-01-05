@@ -19,10 +19,7 @@ module.exports = (sequelize, type) => {
         },
         id_customer: {
             type: type.BIGINT,
-            references: {
-                model: 'customer',
-                key: 'id_customer'
-            }
+            allowNull: true
         },
         delivered: {
             type: type.INTEGER,

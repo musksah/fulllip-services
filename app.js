@@ -37,6 +37,7 @@ app.use('/api/email', require('./src/routes/emailRoute'));
 app.use('/api/epayco', require('./src/routes/epaycoRoute'));
 app.use('/api/order', require('./src/routes/orderRoute'));
 app.use('/api/donation', require('./src/routes/donationRoute'));
+app.use('/api/settings', require('./src/routes/settingsRoute'));
 
 
 app.get('/', (req, res) => {

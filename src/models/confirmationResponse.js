@@ -216,17 +216,17 @@ module.exports = (sequelize, type) => {
             defaultValue: ''
         },
         x_extra1: {
-            type: type.STRING(800),
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra2: {
-            type: type.STRING(800),
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },
         x_extra3: {
-            type: type.STRING(800),
+            type: type.STRING(500),
             allowNull: false,
             defaultValue: ''
         },

@@ -17,3 +17,4 @@ delete from item;
 delete from customer;
 delete from user;
 delete from rol;
+delete from settings;

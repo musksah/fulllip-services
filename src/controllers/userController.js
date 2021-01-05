@@ -61,7 +61,7 @@ module.exports.register = (req, res) => {
                 if (user) {
                     const { id_user, email, id_rol } = user;
                     const customer = await Customer.create({ name: req.body.name, lastname: req.body.lastname, id_user: id_user });
-                    const { name } = customer;
+                    const { id_customer ,name } = customer;
                     const token = jwt.sign({ id_user, name, email }, keytoken, { expiresIn: '24h' });
                     if (parseInt(rol) === 1) {
                         const response = await mailManager.sendEmailConfirmation(token);
@@ -71,7 +71,7 @@ module.exports.register = (req, res) => {
                     req.session.email = email;
                     req.session.id_rol = id_rol;
                     const sessionI = req.sessionID;
-                    res.json({ token: token, name: name, session: sessionI });
+                    res.json({ token: token, name: name, session: sessionI, id_customer: id_customer});
                 }
             } catch (error) {
                 console.error(error);

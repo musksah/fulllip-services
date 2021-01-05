@@ -66,3 +66,5 @@ INSERT INTO `video` (`id_video`, `title`, `url`, `description`, `createdAt`, `up
 (2, 'Ovalado Mediano', 'https://www.youtube.com/watch?v=P1aF39p8YDY&feature=emb_title&app=desktop', '', '2020-09-21 00:00:00', '2020-09-21 00:00:00'), 
 (3, 'Redondo Grande', 'https://www.youtube.com/watch?v=-FTer8B3K2A&feature=emb_logo&app=desktop', '', '2020-09-21 00:00:00', '2020-09-21 00:00:00'); 
 
+INSERT INTO `settings` (`id_settings`, `name`, `activated`, `createdAt`, `updatedAt`) VALUES
+(1, 'confirm_auth', 0, '2021-01-04 12:35:08', '2021-01-04 14:51:37');

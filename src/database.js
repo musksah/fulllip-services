@@ -19,6 +19,7 @@ const imgInProdModel = require('./models/img_index_product');
 const videoModel = require('./models/video');
 const confirmationResponseModel = require('./models/confirmationResponse');
 const donationModel = require('./models/donation');
+const settingsModel = require('./models/settings');
 const { database } = require('./keys');
 
 const sequelize = new Sequelize(database);
@@ -43,6 +44,7 @@ const ImgInProduct = imgInProdModel(sequelize, Sequelize);
 const Video = videoModel(sequelize, Sequelize);
 const ConfirmationResponse = confirmationResponseModel(sequelize, Sequelize)
 const Donation = donationModel(sequelize, Sequelize);
+const Settings = settingsModel(sequelize, Sequelize);
 
 sequelize.sync().then(() => {
     console.log("tablas creadas");
@@ -68,5 +70,6 @@ module.exports = {
     ImgInProduct,
     Video,
     ConfirmationResponse,
-    Donation
+    Donation,
+    Settings
 }
