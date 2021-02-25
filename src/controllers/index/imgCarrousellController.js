@@ -33,7 +33,7 @@ module.exports.updateFile = async (req, res) => {
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     sampleFile = req.files.file;
     // uploadPath = 'C:\\Users\\57302\\Documents\\Proyects\\imgpruebas' + sampleFile.name;
-    uploadPath = `${PATHFILES}/${sampleFile.name}`;
+    uploadPath = `${keys.pathImages}/${sampleFile.name}`;
     
     // Use the mv() method to place the file somewhere on your server
     sampleFile.mv(uploadPath, function (err) {

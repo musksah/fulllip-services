@@ -27,5 +27,5 @@ module.exports = {
         user:'info@fullipscolombia.com',
         password: 'Lalitos321'
     },
-    pathImages:"/home/admin/web/fullipscolombia.com/public_html"
+    pathImages:"/home/admin/web/fullipscolombia.com/public_html/img/index/banner"
 };
