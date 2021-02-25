@@ -10,7 +10,15 @@ module.exports = (sequelize, type) => {
         description: type.TEXT,
         weight: type.STRING,
         price: type.INTEGER,
-        stock: type.INTEGER
+        stock: type.INTEGER,
+        discounted_price: {
+            type: type.INTEGER,
+            defaultValue: 0
+        },
+        is_discounted: {
+            type: type.INTEGER,
+            defaultValue: 0
+        }
     }, {
         tableName: 'item'
     });
