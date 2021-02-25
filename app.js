@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const keys = require('./src/keys');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const { sessionStore } = require('./src/middlewares/session');
 
 const app = express();
@@ -27,7 +28,7 @@ app.set('port', 8005);
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(fileUpload());
 
 app.use('/api/user', require('./src/routes/userRoute'));
 app.use('/api/advice', require('./src/routes/adviceRoute'));
