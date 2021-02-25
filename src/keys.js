@@ -26,5 +26,6 @@ module.exports = {
         port: '587',
         user:'info@fullipscolombia.com',
         password: 'Lalitos321'
-    }
+    },
+    pathImages:"/home/admin/web/fullipscolombia.com/public_html"
 };
