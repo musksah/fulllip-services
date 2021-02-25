@@ -19,6 +19,12 @@ module.exports.update = async (req, res) => {
     res.json({'Probando':'123'});
 }
 
+module.exports.updateFile = async (req, res) => {
+    const files = req.files;
+    console.log(files)
+    res.json({'response':'consumiendo la actualización de archivos.'});
+}
+
 module.exports.delete = async (req, res) => {
     res.json({'Probando':'123'});
 }
