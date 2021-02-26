@@ -37,6 +37,7 @@ module.exports.updateFile = async (req, res) => {
         console.log('File removed')
     } catch (err) {
         console.error('Something wrong happened removing the file', err)
+        return res.status(500).send('Something wrong happened removing the file '+err);
     }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
