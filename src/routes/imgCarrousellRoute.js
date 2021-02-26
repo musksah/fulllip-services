@@ -4,6 +4,8 @@ const imageIndexController = require('../controllers/index/imgCarrousellControll
 
 router.post('/', imageIndexController.create);
 router.post('/update-file', imageIndexController.updateFile);
+router.post('/delete-file', imageIndexController.deleteFile);
+
 
 router.get('/', imageIndexController.findAll);
 

@@ -26,7 +26,7 @@ module.exports.update = async (req, res) => {
 module.exports.updateFile = async (req, res) => {
     let sampleFile;
     let uploadPath;
-    console.log(req.body)
+    let consoleLog = '';
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
@@ -34,10 +34,10 @@ module.exports.updateFile = async (req, res) => {
     //Borra el archivo anterior
     try {
         fs.unlinkSync(`${keys.pathImages}/${sampleFile.name}`)
-        console.log('File removed')
+        consoleLog+='File removed';
     } catch (err) {
-        console.error('Something wrong happened removing the file', err)
-        return res.status(500).send('Something wrong happened removing the file '+err);
+        consoleLog+='Something wrong happened removing the file '+err+' ';
+        return res.status(500).send(consoleLog);
     }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
@@ -49,9 +49,22 @@ module.exports.updateFile = async (req, res) => {
             console.log(err);
             return res.status(500).send(err);
         }
-        res.json('File uploaded!');
+        consoleLog+=' File uploaded! '+uploadPath;
+        res.json(consoleLog);
     });
 }
+
+module.exports.deleteFile = async (req, res) => {
+    let sampleFile = req.body;
+    try {
+        fs.unlinkSync(`${keys.pathImages}/${sampleFile.name}`)
+        return res.status(200).send('File removed!');
+    } catch (err) {
+        console.error('Something wrong happened removing the file', err)
+        return res.status(500).send('Something wrong happened removing the file '+err);
+    }
+}
+
 
 module.exports.delete = async (req, res) => {
     res.json({ 'Probando': '123' });
