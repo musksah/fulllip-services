@@ -85,7 +85,6 @@ module.exports.updateFile = async (req, res) => {
         consoleLog+=' File uploaded! '+uploadPath;
         res.json(consoleLog);
     });
-    return res.status(500).send("ok");
 }
 
 module.exports.deleteFile = async (req, res) => {
