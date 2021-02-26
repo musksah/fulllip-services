@@ -11,6 +11,7 @@ services:
       - .env
     volumes:
       - ./www/:/var/www/html/
+      -  /home/admin/web/fullipscolombia.com/public_html/img/index/banner/:/var/www/html/banner/
     ports:
       - "3005:8005"
     container_name: fulllip-nodejs-app

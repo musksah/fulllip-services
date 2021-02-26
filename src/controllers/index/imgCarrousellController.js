@@ -1,5 +1,6 @@
 const { ImageCarr } = require('../../database');
 const keys = require('../../keys');
+const fs = require('fs')
 
 const PATHFILES = `${keys.pathImages}/img/index/banner`;
 
@@ -25,19 +26,25 @@ module.exports.update = async (req, res) => {
 module.exports.updateFile = async (req, res) => {
     let sampleFile;
     let uploadPath;
-    console.log(req.files);
+    console.log(req.body)
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
+    sampleFile = req.files.file;
+    //Borra el archivo anterior
+    try {
+        fs.unlinkSync(`${keys.pathImages}/${sampleFile.name}`)
+        console.log('File removed')
+    } catch (err) {
+        console.error('Something wrong happened removing the file', err)
+    }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    sampleFile = req.files.file;
-    // uploadPath = 'C:\\Users\\57302\\Documents\\Proyects\\imgpruebas' + sampleFile.name;
     uploadPath = `${keys.pathImages}/${sampleFile.name}`;
-    
+
     // Use the mv() method to place the file somewhere on your server
     sampleFile.mv(uploadPath, function (err) {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(500).send(err);
         }
