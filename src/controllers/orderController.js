@@ -18,7 +18,13 @@ module.exports.findAll = async (req, res) => {
                 'phone',
                 [Sequelize.fn('date_format', Sequelize.col('agreed_date'), '%Y-%m-%d %h:%i:%s'), 'agreed_date']
             ]
-        }, { model: OrderDetails, include: [Item] }], order: [['id_order', 'DESC']]
+        }, { model: OrderDetails, include: [Item] }], 
+        where: {
+            status_code: {
+              [Sequelize.Op.not]: '2'
+            }
+        },
+        order: [['id_order', 'DESC']],
     });
     console.log(order);
     res.json(order);
