@@ -44,10 +44,11 @@ app.use('/api/epayco', require('./src/routes/epaycoRoute'));
 app.use('/api/order', require('./src/routes/orderRoute'));
 app.use('/api/donation', require('./src/routes/donationRoute'));
 app.use('/api/settings', require('./src/routes/settingsRoute'));
+app.use('/api/coupon', require('./src/routes/couponRoute'));
 
 
 app.get('/', (req, res) => {
-    res.send("Bienvenido a los servicios de Fullip");
+    res.send("Site forbidden from fullips");
 });
 
 app.listen(app.get('port'), () => {

@@ -26,7 +26,9 @@ module.exports = (sequelize, type) => {
             defaultValue: 0,
             allowNull: false
         },
-        donation: type.INTEGER
+        donation: type.INTEGER,
+        id_coupon: type.BIGINT,
+        commission: type.INTEGER
     }, {
         tableName: 'order'
     });
