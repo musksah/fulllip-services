@@ -34,7 +34,7 @@ module.exports.findDetailSale = async (req, res) => {
                 model: Coupon,attributes: ['id_coupon','codename','name','discount_value'] 
             }
         ],
-        where: { id_coupon: req.params.id }, 
+        where: { id_coupon: req.params.id, status_code: '1' }, 
         order: [['id_order', 'DESC']]
     });
     console.log(order);
