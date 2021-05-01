@@ -102,9 +102,14 @@ class Mail {
         fs.readFile(__dirname + '/email/saleconfirmed.html', (err, template) => {
             if (err) throw err;
             let strTemplate = template.toString();
+            var maillist = [
+                'fullipscolombia@gmail.com',
+                'anivergaragracia@gmail.com',
+                'lvergaragracia@gmail.com ',
+              ]
             let mailOptions = {
                 from: `Fullips Colombia <${smtp.user}>`,
-                to: 'fullipscolombia@gmail.com',
+                to: maillist,
                 // to: 'xsebastianhrodriguezx@gmail.com',
                 subject: 'Venta confirmada',
                 html: strTemplate
